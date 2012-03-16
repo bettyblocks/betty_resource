@@ -9,7 +9,7 @@ module BettyResource
 
     def self.parse(input)
       input.inject({}) do |hash, row|
-        hash.merge(row[:name] => Model.new(row[:id], row[:name], row[:properties]))
+        hash.merge(row["name"] => Model.new(row["id"], row["name"], row["properties"]))
       end
     end
   end

@@ -10,8 +10,7 @@ class MetaData
   end
 
   def model(name)
-    puts @models.inspect
-    @models[name]
+    @models[name.to_s]
   end
   
 end
