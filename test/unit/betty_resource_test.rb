@@ -64,7 +64,7 @@ module Unit
         assert_raises(NoMethodError) {
           assert relation.id = 2
         }
-      end
+      end
     end
   end
 end

@@ -6,10 +6,7 @@ module BettyResource
     def initialize(model, attributes = {})
       @id = attributes.delete(:id) || attributes.delete("id")
       @model = model
-      model.properties.reject{|p|p.name == "id"}.each do |property|
-        define_setter(property)
-        define_getter(property)
-      end
+      define_accessors
 
       attributes.each do |key, value|
         send "#{key}=", value
@@ -23,6 +20,12 @@ module BettyResource
     end
 
   private
+    def define_accessors
+      model.properties.reject{|p|p.name == "id"}.each do |property|
+        define_setter(property)
+        define_getter(property)
+      end
+    end
 
     def define_setter(property)
       define_singleton_method("#{property.name}=") do |val|
