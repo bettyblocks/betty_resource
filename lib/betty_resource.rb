@@ -12,7 +12,9 @@ module BettyResource
 
   def self.const_missing(name)
     puts "missing: #{name}"
-    meta_data.model(name) || super
+    meta_data.model(name).tap do |model|
+       const_set(name, model)
+    end || super
   end
 
   def self.config
