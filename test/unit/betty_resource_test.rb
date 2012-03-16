@@ -15,6 +15,12 @@ module Unit
       it "should return the model of a BettyResource::Record" do
         assert_equal BettyResource::Relation.new.model, BettyResource::Relation
       end
+
+      it "should raise NameError when an unknown model is requested" do
+        assert_raises(NameError) {
+          assert BettyResource::DoesNotExist
+        }
+      end
     end
   end
 end
