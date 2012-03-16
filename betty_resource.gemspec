@@ -6,19 +6,15 @@ Gem::Specification.new do |s|
   s.name        = "betty_resource"
   s.version     = BettyResource::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Chiel Wester"]
-  s.email       = ["chiel.wester@holder.nl"]
-  s.homepage    = ""
+  s.authors     = ["Chiel Wester", "Stephan Kaag", "Daniel Willemse"]
+  s.email       = ["chiel.wester@holder.nl", "stephan.kaag@holder.nl", "daniel.willemse@holder.nl"]
+  s.homepage    = "www.bettyblocks.com"
   s.summary     = %q{Connect to betty5 applications}
-  s.description = %q{Connect to betty5 applications by specifying betty5 resource using model_id view_id and form_ids}
-
-  s.rubyforge_project = "betty_resource"
+  s.description = %q{Connect to betty5 applications by specifying betty5 resource}
 
   s.add_dependency 'json'
   s.add_dependency 'httparty'
-  s.add_dependency 'activemodel'
   s.add_dependency 'activesupport'
-  s.add_dependency 'will_paginate', '~> 3.0'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
