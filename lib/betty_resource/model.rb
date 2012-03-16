@@ -10,8 +10,12 @@ module BettyResource
     end
 
     def get(record_id)
-      attributes = self.class.get("/models/#{id}/records/#{record_id}").parsed_response
-      BettyResource::Record.new(self, attributes)
+      attributes = begin
+        self.class.get("/models/#{id}/records/#{record_id}").parsed_response
+      rescue MultiJson::DecodeError
+      end
+
+      BettyResource::Record.new(self, attributes) if attributes
     end
 
     def new
