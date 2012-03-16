@@ -14,7 +14,7 @@ module BettyResource
 
     def save
       if id
-        self.class.put("/models/#{model.id}/records/#{id}", to_params).parsed_response
+        self.class.put("/models/#{model.id}/records/#{id}", to_params)
       else
         response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
         @id = response["id"]
