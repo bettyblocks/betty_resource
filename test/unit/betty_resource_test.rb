@@ -72,9 +72,22 @@ module Unit
 
       it "should save the record" do
         relation = BettyResource::Relation.new(:first_name => "Stephan", :last_name => "Kaag")
-        relation.save
+        assert relation.save
 
         assert relation.id > 0
+
+        relation = BettyResource::Relation.get(relation.id)
+        assert_equal "Stephan", relation.first_name
+        assert_equal "Kaag", relation.last_name
+      end
+
+      it "should not save an invalid record" do
+        relation = BettyResource::Relation.new # first_name is required
+        assert !relation.save
+        # TODO: check relation.errors
+
+        relation.first_name = "Stephan" # correct it
+        assert relation.save
       end
     end
   end
