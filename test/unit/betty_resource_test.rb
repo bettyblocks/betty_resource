@@ -81,6 +81,15 @@ module Unit
         assert_equal "Kaag", relation.last_name
       end
 
+      it "should directy create a record" do
+        assert relation = BettyResource::Relation.create(:first_name => "Stephan", :last_name => "Kaag")
+        assert relation.id > 0
+
+        relation = BettyResource::Relation.get(relation.id)
+        assert_equal "Stephan", relation.first_name
+        assert_equal "Kaag", relation.last_name
+      end
+
       it "should not save an invalid record" do
         relation = BettyResource::Relation.new # first_name is required
         assert !relation.save
