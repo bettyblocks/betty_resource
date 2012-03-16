@@ -1,7 +1,6 @@
 module BettyResource
-  class Record
-    attr_reader :id
-    attr_reader :model
+  class Record < Base
+    attr_reader :id, :model
 
     def initialize(model, attributes = {})
       @id = attributes.delete(:id) || attributes.delete("id")
@@ -13,6 +12,11 @@ module BettyResource
       end
     end
 
+    def save
+      response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
+      @id = response["id"]
+    end
+
     def attributes
       @attributes ||= model.properties.inject(HashWithIndifferentAccess.new) do |hash, property|
         hash.merge(property.name => nil)
@@ -20,6 +24,10 @@ module BettyResource
     end
 
   private
+    def to_params
+      {:body => {:record => attributes }}
+    end
+
     def define_accessors
       model.properties.reject{|p|p.name == "id"}.each do |property|
         define_setter(property)

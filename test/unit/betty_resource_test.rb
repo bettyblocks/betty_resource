@@ -65,6 +65,13 @@ module Unit
           assert relation.id = 2
         }
       end
+
+      it "should save the record" do
+        relation = BettyResource::Relation.new(:first_name => "Stephan", :last_name => "Kaag")
+        relation.save
+
+        assert relation.id > 0
+      end
     end
   end
 end
