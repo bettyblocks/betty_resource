@@ -13,8 +13,12 @@ module BettyResource
     end
 
     def save
-      response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
-      @id = response["id"]
+      if id
+        self.class.put("/models/#{model.id}/records/#{id}", to_params).parsed_response
+      else
+        response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
+        @id = response["id"]
+      end
     end
 
     def attributes

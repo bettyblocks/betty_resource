@@ -70,11 +70,22 @@ module Unit
         }
       end
 
-      it "should save the record" do
+      it "should save a new record" do
         relation = BettyResource::Relation.new(:first_name => "Stephan", :last_name => "Kaag")
         relation.save
 
         assert relation.id > 0
+      end
+
+      it "should save an existing record" do
+        relation = BettyResource::Relation.new(:first_name => "Stefan", :last_name => "Kaag")
+        relation.save
+
+        relation.first_name = "Stephan"
+        relation.save
+
+        final_relation = BettyResource::Relation.get(relation.id)
+        assert_equal "Stephan", final_relation.first_name
       end
     end
   end
