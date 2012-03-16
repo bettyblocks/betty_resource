@@ -13,11 +13,11 @@ module BettyResource
     end
 
     def save
-      if id
-        self.class.put("/models/#{model.id}/records/#{id}", to_params)
-      else
+      if new_record?
         response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
-        @id = response["id"]
+        @id = response["id"].to_i if response["id"]
+      else
+        self.class.put("/models/#{model.id}/records/#{id}", to_params).parsed_response
       end
     end
 
@@ -27,7 +27,12 @@ module BettyResource
       end
     end
 
+    def new_record?
+      @id.nil?
+    end
+
   private
+
     def to_params
       {:body => {:record => attributes }}
     end

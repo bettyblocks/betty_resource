@@ -22,6 +22,12 @@ module BettyResource
       BettyResource::Record.new(self, attributes)
     end
 
+    def create(attributes = {})
+      record = new(attributes)
+      record.save
+      record
+    end
+
     def to_s
       name
     end
