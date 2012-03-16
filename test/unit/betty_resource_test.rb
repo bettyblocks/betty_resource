@@ -21,6 +21,17 @@ module Unit
         assert_equal relation.attributes.keys.sort, ["first_name", "last_name"]
       end
 
+      it "should create an attr_accessor for each attribute" do
+        relation = BettyResource::Relation.new
+        assert relation.first_name = "my_first_name"
+      end
+
+      it "should store the value in @attributes variable" do
+        relation = BettyResource::Relation.new
+        relation.first_name = "my_first_name"
+        assert_equal relation.attributes[:first_name], "my_first_name"
+      end
+
       it "should raise NameError when an unknown model is requested" do
         assert_raises(NameError) {
           assert BettyResource::DoesNotExist
