@@ -16,6 +16,11 @@ module Unit
         assert_equal BettyResource::Relation.new.model, BettyResource::Relation
       end
 
+      it "should return the attributes for a new BettyResource::Record" do
+        relation = BettyResource::Relation.new
+        assert_equal relation.attributes.keys.sort, ["first_name", "last_name"]
+      end
+
       it "should raise NameError when an unknown model is requested" do
         assert_raises(NameError) {
           assert BettyResource::DoesNotExist
