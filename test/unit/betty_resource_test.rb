@@ -39,6 +39,12 @@ module Unit
         assert_equal relation.first_name, "my_first_name"
       end
 
+      it "should allow mass-assignment when creating a new record" do
+        relation = BettyResource::Relation.new({:first_name => "my_first_name", :last_name => "my_last_name"})
+        assert_equal relation.first_name, "my_first_name"
+        assert_equal relation.last_name, "my_last_name"
+      end
+
       it "should raise NameError when an unknown model is requested" do
         assert_raises(NameError) {
           assert BettyResource::DoesNotExist

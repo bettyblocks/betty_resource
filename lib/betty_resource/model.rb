@@ -14,8 +14,8 @@ module BettyResource
       BettyResource::Record.new(self, attributes)
     end
 
-    def new
-      BettyResource::Record.new(self)
+    def new(attributes = {})
+      BettyResource::Record.new(self, attributes)
     end
 
     def to_s
