@@ -12,12 +12,11 @@ Gem::Specification.new do |s|
   s.summary     = %q{Connect to betty5 applications}
   s.description = %q{Connect to betty5 applications by specifying betty5 resource}
 
-  s.add_dependency 'json'
-  s.add_dependency 'httparty'
-  s.add_dependency 'activesupport'
-  s.add_dependency 'crack'
+  s.add_dependency "httparty"
+  s.add_dependency "activesupport"
+  s.add_dependency "crack"
 
-  s.add_development_dependency 'minitest'
+  s.add_development_dependency "minitest"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
