@@ -5,7 +5,7 @@ module Unit
 
     describe BettyResource::Base do
       it "should work" do
-        assert BettyResource::Base
+        assert BettyResource::Relation
       end
     end
     

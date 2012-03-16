@@ -6,3 +6,6 @@ require "minitest/autorun"
 
 require_relative "../init"
 
+BettyResource.config.host = "betty-resource-test.bettyblocks.com"
+BettyResource.config.user = "testuser@bettyblocks.com"
+BettyResource.config.password = "ensure"
