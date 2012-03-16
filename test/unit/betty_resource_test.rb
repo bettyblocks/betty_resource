@@ -21,9 +21,10 @@ module Unit
         assert_equal relation.attributes.keys.sort, ["first_name", "last_name"]
       end
 
-      it "should create an attr_accessor for each attribute" do
+      it "should create a method for writing each attribute" do
         relation = BettyResource::Relation.new
         assert relation.first_name = "my_first_name"
+        assert relation.last_name = "my_last_name"
       end
 
       it "should store the value in @attributes variable" do
