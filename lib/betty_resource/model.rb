@@ -12,5 +12,13 @@ module BettyResource
         hash.merge(row["name"] => Model.new(row["id"], row["name"], row["properties"]))
       end
     end
+
+    def new
+      BettyResource::Record.new(:model => self)
+    end
+
+    def to_s
+      name
+    end
   end
 end

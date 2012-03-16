@@ -9,6 +9,7 @@ module BettyResource
   autoload :Configuration
   autoload :MetaData
   autoload :Model
+  autoload :Record
 
   def self.const_missing(name)
     puts "missing: #{name}"
@@ -18,7 +19,7 @@ module BettyResource
   def self.config
     @configuration ||= Configuration.new
   end
-  
+
   def self.meta_data
     @meta_data ||= MetaData.new
   end
