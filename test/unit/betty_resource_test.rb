@@ -51,6 +51,10 @@ module Unit
         }
       end
 
+      it "should not load unexising records" do
+        assert_nil BettyResource::Relation.get(-1)
+      end
+
       it "should load attributes" do
         relation = BettyResource::Relation.get(1)
         assert_equal "Daniel", relation.first_name
