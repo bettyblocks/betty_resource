@@ -7,6 +7,10 @@ module BettyResource
   autoload :Base
   autoload :Configuration
 
+  def self.const_missing(name)
+    puts "missing: #{name}"
+  end
+
   def self.config
     @configuration ||= Configuration.new
   end
