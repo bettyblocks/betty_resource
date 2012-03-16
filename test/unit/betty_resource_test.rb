@@ -99,6 +99,16 @@ module Unit
         assert relation.save
       end
 
+      it "should not resave an invalid record" do
+        relation = BettyResource::Relation.new :first_name => "Piet"
+        assert relation.save
+
+        relation.first_name = "" # make invalid
+        assert !relation.save
+        assert relation.id > 0
+        assert_equal "Piet", BettyResource::Relation.get(relation.id).first_name # not saved
+      end
+
       it "should save an existing record" do
         relation = BettyResource::Relation.new(:first_name => "Stefan", :last_name => "Kaag")
         relation.save

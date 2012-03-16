@@ -14,11 +14,13 @@ module BettyResource
 
     def save
       if new_record?
-        response = self.class.post("/models/#{model.id}/records/new", to_params).parsed_response
-        @id = response["id"].to_i if response["id"]
+        result = self.class.post("/models/#{model.id}/records/new", to_params)
+        @id = result.parsed_response["id"].to_i if result.code == 201
       else
-        self.class.put("/models/#{model.id}/records/#{id}", to_params).parsed_response
+        result = self.class.put("/models/#{model.id}/records/#{id}", to_params)
       end
+
+      result.code.to_s[0..1] == "20" # success status codes starts with 20x
     end
 
     def attributes
