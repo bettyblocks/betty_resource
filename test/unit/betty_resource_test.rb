@@ -81,7 +81,7 @@ module Unit
         assert_equal "Kaag", relation.last_name
       end
 
-      it "should directy create a record" do
+      it "should directly create a record" do
         assert relation = BettyResource::Relation.create(:first_name => "Stephan", :last_name => "Kaag")
         assert relation.id > 0
 
