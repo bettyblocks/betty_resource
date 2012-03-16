@@ -13,12 +13,12 @@ module Unit
       end
 
       it "should return the model of a BettyResource::Record" do
-        assert_equal BettyResource::Relation.new.model, BettyResource::Relation
+        assert_equal BettyResource::Relation, BettyResource::Relation.new.model
       end
 
       it "should return the attributes for a new BettyResource::Record" do
         relation = BettyResource::Relation.new
-        assert_equal relation.attributes.keys.sort, ["first_name", "last_name"]
+        assert_equal ["first_name", "last_name"], relation.attributes.keys.sort
       end
 
       it "should create a method for writing each attribute" do
@@ -30,19 +30,19 @@ module Unit
       it "should store the value in @attributes variable" do
         relation = BettyResource::Relation.new
         relation.first_name = "my_first_name"
-        assert_equal relation.attributes[:first_name], "my_first_name"
+        assert_equal "my_first_name", relation.attributes[:first_name]
       end
 
       it "should create a method for reading each attribute" do
         relation = BettyResource::Relation.new
         relation.first_name = "my_first_name"
-        assert_equal relation.first_name, "my_first_name"
+        assert_equal "my_first_name", relation.first_name
       end
 
       it "should allow mass-assignment when creating a new record" do
         relation = BettyResource::Relation.new({:first_name => "my_first_name", :last_name => "my_last_name"})
-        assert_equal relation.first_name, "my_first_name"
-        assert_equal relation.last_name, "my_last_name"
+        assert_equal "my_first_name", relation.first_name
+        assert_equal "my_last_name", relation.last_name
       end
 
       it "should raise NameError when an unknown model is requested" do
