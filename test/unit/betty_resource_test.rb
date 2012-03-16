@@ -33,6 +33,12 @@ module Unit
         assert_equal relation.attributes[:first_name], "my_first_name"
       end
 
+      it "should create a method for reading each attribute" do
+        relation = BettyResource::Relation.new
+        relation.first_name = "my_first_name"
+        assert_equal relation.first_name, "my_first_name"
+      end
+
       it "should raise NameError when an unknown model is requested" do
         assert_raises(NameError) {
           assert BettyResource::DoesNotExist
