@@ -9,18 +9,24 @@ module BettyResource
       @id, @name, @properties = id, name, properties
     end
 
+    def get(record_id)
+      attributes = self.class.get("/models/#{id}/records/#{record_id}").parsed_response
+      BettyResource::Record.new(self, attributes)
+    end
+
+    def new
+      BettyResource::Record.new(self)
+    end
+
+    def to_s
+      name
+    end
+
     def self.parse(input)
       input.inject({}) do |hash, row|
         hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
       end
     end
 
-    def new
-      BettyResource::Record.new(:model => self)
-    end
-
-    def to_s
-      name
-    end
   end
 end

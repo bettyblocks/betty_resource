@@ -44,6 +44,21 @@ module Unit
           assert BettyResource::DoesNotExist
         }
       end
+
+      it "should load attributes" do
+        relation = BettyResource::Relation.get(1)
+        assert_equal "Daniel", relation.first_name
+        assert_equal "Willemse", relation.last_name
+        assert_equal 1, relation.id
+      end
+
+      it "should not allow setting of id" do
+        relation = BettyResource::Relation.get(1)
+        assert_equal 1, relation.id
+        assert_raises(NoMethodError) {
+          assert relation.id = 2
+        }
+      end
     end
   end
 end

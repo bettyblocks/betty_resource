@@ -1,22 +1,28 @@
 module BettyResource
   class Record
+    attr_reader :id
     attr_reader :model
 
-    def initialize(args)
-      @model = args[:model]
-      model.properties.each do |property|
+    def initialize(model, attributes = {})
+      @id = attributes.delete(:id) || attributes.delete("id")
+      @model = model
+      model.properties.reject{|p|p.name == "id"}.each do |property|
         define_setter(property)
         define_getter(property)
+      end
+
+      attributes.each do |key, value|
+        send "#{key}=", value
       end
     end
 
     def attributes
-      @attributes ||= model.properties.inject(HashWithIndifferentAccess.new()) do |hash, property|
+      @attributes ||= model.properties.inject(HashWithIndifferentAccess.new) do |hash, property|
         hash.merge(property.name => nil)
       end
     end
 
-    private
+  private
 
     def define_setter(property)
       define_singleton_method("#{property.name}=") do |val|
