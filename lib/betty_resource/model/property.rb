@@ -5,9 +5,9 @@ module BettyResource
 
       def initialize(id, name, kind)
         # TODO: require id, name, kind
-        @id, @name, @properties = id, name, kind
+        @id, @name, @kind = id, name, kind
       end
-      
+
       def self.parse(input)
         input.collect do |row|
           Property.new(row["id"], row["name"], row["kind"])
