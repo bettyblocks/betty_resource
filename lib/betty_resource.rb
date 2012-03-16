@@ -1,3 +1,6 @@
+require "active_support/dependencies/autoload"
+require "httparty"
+
 module BettyResource
   extend ActiveSupport::Autoload
 
