@@ -18,6 +18,16 @@ module BettyResource
       BettyResource::Record.new(self, attributes) if attributes
     end
 
+    def all(options = {})
+      self.class.post("/models/#{id}/records", :query => options).parsed_response.collect do |json|
+        attributes = begin
+          json
+        rescue MultiJson::DecodeError
+        end
+        BettyResource::Record.new(self, json) if attributes
+      end
+    end
+
     def new(attributes = {})
       BettyResource::Record.new(self, attributes)
     end
