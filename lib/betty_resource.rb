@@ -29,4 +29,5 @@ module BettyResource
   def self.configure
     yield config
   end
+
 end

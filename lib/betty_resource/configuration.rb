@@ -2,7 +2,6 @@ require 'singleton'
 
 module BettyResource
   class Configuration
-
     attr_accessor :host, :user, :password
 
     def validate!
@@ -11,5 +10,6 @@ module BettyResource
 
     class InvalidConfigurationError < ::StandardError
     end
+
   end
 end

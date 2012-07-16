@@ -120,5 +120,6 @@ module Unit
         assert_equal "Stephan", final_relation.first_name
       end
     end
+
   end
 end

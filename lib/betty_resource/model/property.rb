@@ -13,6 +13,7 @@ module BettyResource
           Property.new(row["id"], row["name"], row["kind"])
         end
       end
+
     end
   end
 end

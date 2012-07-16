@@ -57,5 +57,6 @@ module BettyResource
         attributes[property.name]
       end
     end
+
   end
 end
