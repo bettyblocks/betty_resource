@@ -21,5 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "httparty"
   gem.add_dependency "activesupport"
   gem.add_dependency "crack"
+  gem.add_dependency "dirty_hashy", "0.1.3"
   gem.add_development_dependency "minitest"
 end

@@ -59,6 +59,7 @@ module BettyResource
         (record || BettyResource::Model::Record.new(self)).tap do |record|
           record.instance_variable_set :@id, id
           record.attributes = data
+          record.clean_up!
         end
       end
     end

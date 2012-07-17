@@ -1,6 +1,9 @@
 module BettyResource
   class Model < Base
     class Record < Base
+
+      include DirtyAttributes::InstanceMethods
+      include MethodMap
       attr_reader :id, :model
 
       alias :_class :class
@@ -9,26 +12,14 @@ module BettyResource
       end
 
       def initialize(model, attributes = {})
-        @id = attributes.delete(:id) || attributes.delete("id")
         @model = model
-        define_accessors
-        self.attributes = attributes
+        @id = attributes.delete(:id) || attributes.delete("id")
+        super()
+        self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
       end
 
       def new_record?
         @id.nil?
-      end
-
-      def attributes
-        @attributes ||= model.properties.inject(HashWithIndifferentAccess.new) do |hash, property|
-          hash.merge(property.name => nil)
-        end
-      end
-
-      def attributes=(values)
-        values.each do |key, value|
-          send "#{key}=", value
-        end
       end
 
       def save
@@ -54,25 +45,6 @@ module BettyResource
 
       def to_params
         {:body => {:record => attributes}}
-      end
-
-      def define_accessors
-        model.properties.reject{|p|p.name == "id"}.each do |property|
-          define_setter(property)
-          define_getter(property)
-        end
-      end
-
-      def define_setter(property)
-        define_singleton_method("#{property.name}=") do |val|
-          attributes[property.name] = val
-        end
-      end
-
-      def define_getter(property)
-        define_singleton_method("#{property.name}") do
-          attributes[property.name]
-        end
       end
 
     end
