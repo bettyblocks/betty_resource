@@ -37,6 +37,11 @@ module BettyResource
         end
       end
 
+      def to_s
+        inspection = "id: #{id.inspect}, #{attributes.collect{|key, value| "#{key}: #{value.inspect}"}.join(", ")}"
+        "#<#{model.name} #{inspection}>"
+      end
+
       def as_json
         attributes.merge "id" => id
       end
