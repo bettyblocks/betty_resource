@@ -18,12 +18,18 @@ module BettyResource
     end
 
     def all(options = {})
-      load(self.class.get("/models/#{id}/records", :body => options))
+      begin
+        self.class.get("/models/#{id}/records", :body => options).parsed_response.collect do |data|
+          load data
+        end
+      rescue MultiJson::DecodeError
+      end
     end
 
     def get(record_id)
-      if data = load(self.class.get("/models/#{id}/records/#{record_id}"))
-        data.first
+      begin
+        load self.class.get("/models/#{id}/records/#{record_id}").parsed_response
+      rescue MultiJson::DecodeError
       end
     end
 
@@ -43,18 +49,12 @@ module BettyResource
 
   private
 
-    def load(data)
-      if parsed_data = data.parsed_response
-        begin
-          [parsed_data].flatten.collect do |data|
-            if data
-              id = data.delete "id"
-              BettyResource::Model::Record.new(self, data).tap do |record|
-                record.instance_variable_set :@id, id
-              end
-            end
-          end
-        rescue MultiJson::DecodeError
+    def load(data, record = nil)
+      if data
+        id = data.delete "id"
+        (record || BettyResource::Model::Record.new(self)).tap do |record|
+          record.instance_variable_set :@id, id
+          record.attributes = data
         end
       end
     end
