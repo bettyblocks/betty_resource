@@ -10,6 +10,10 @@ module Unit
         assert BettyResource::Relation.properties[0].is_a?(BettyResource::Model::Property)
       end
 
+      it "should know its attributes" do
+        assert_equal %w(first_name last_name), BettyResource::Relation.attributes.sort
+      end
+
       it "should return a new record instance" do
         assert BettyResource::Relation.new.is_a?(BettyResource::Model::Record)
       end

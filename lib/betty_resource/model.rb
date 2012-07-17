@@ -7,14 +7,18 @@ module BettyResource
 
     attr_accessor :id, :name, :properties
 
-    def initialize(id, name, properties = [])
-      @id, @name, @properties = id, name, properties
-    end
-
     def self.parse(input)
       input.inject({}) do |hash, row|
         hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
       end
+    end
+
+    def initialize(id, name, properties = [])
+      @id, @name, @properties = id, name, properties
+    end
+
+    def attributes
+      properties.collect(&:name)
     end
 
     def all(options = {})
