@@ -70,6 +70,14 @@ module Unit
         }
       end
 
+      it "shoud be able to represent itself as JSON" do
+        relation = BettyResource::Relation.new(:first_name => "Paul", :last_name => "Engel")
+        assert_equal({"id" => nil, "first_name" => "Paul", "last_name" => "Engel"}, relation.as_json)
+
+        relation = BettyResource::Relation.get(1)
+        assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse"}, relation.as_json)
+      end
+
       it "should save a new record" do
         relation = BettyResource::Relation.new(:first_name => "Stephan", :last_name => "Kaag")
         assert relation.save

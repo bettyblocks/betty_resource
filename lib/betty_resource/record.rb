@@ -33,6 +33,10 @@ module BettyResource
       @id.nil?
     end
 
+    def as_json
+      attributes.merge "id" => id
+    end
+
   private
 
     def to_params
