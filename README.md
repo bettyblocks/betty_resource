@@ -28,6 +28,14 @@ Afterwards, add the following in a Ruby file which gets required at startup of t
       config.password = <user api password>
     end
 
+## Usage
+
+Using `BettyResource` is pretty straightforward. Let's say you want to load, edit and save a record of the `Relation` model with ID 1:
+
+    $ relation = BettyResource::Relation.get 1
+    $ relation.first_name = "Paul"
+    $ relation.save #=> true
+
 ## Using the console
 
 The BettyResource repo is provided with `script/console` which you can use for development / testing purposes.
