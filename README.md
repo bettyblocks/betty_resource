@@ -8,7 +8,9 @@ This gem is created to map resources directly to the Betty5 API with ease. Just 
 
 ## Setting up / Updating the environment
 
-Add the `betty_resource` gem to your Gemfile
+### Add `BettyResource` to your Gemfile
+
+    gem "betty_resource"
 
 ### Install the gem dependencies
 
