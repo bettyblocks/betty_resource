@@ -10,7 +10,6 @@ module BettyResource
   autoload :Configuration
   autoload :MetaData
   autoload :Model
-  autoload :Record
 
   def self.const_missing(name)
     meta_data.model(name).tap do |model|

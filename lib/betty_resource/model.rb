@@ -1,6 +1,9 @@
 module BettyResource
   class Model < Base
-    autoload :Property, "betty_resource/model/property"
+    extend ActiveSupport::Autoload
+
+    autoload :Record
+    autoload :Property
 
     attr_accessor :id, :name, :properties
 
@@ -9,13 +12,10 @@ module BettyResource
       @id, @name, @properties = id, name, properties
     end
 
-    def get(record_id)
-      attributes = begin
-        self.class.get("/models/#{id}/records/#{record_id}").parsed_response
-      rescue MultiJson::DecodeError
+    def self.parse(input)
+      input.inject({}) do |hash, row|
+        hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
       end
-
-      BettyResource::Record.new(self, attributes) if attributes
     end
 
     def all(options = {})
@@ -24,12 +24,21 @@ module BettyResource
           json
         rescue MultiJson::DecodeError
         end
-        BettyResource::Record.new(self, json) if attributes
+        BettyResource::Model::Record.new(self, json) if attributes
       end
     end
 
+    def get(record_id)
+      attributes = begin
+        self.class.get("/models/#{id}/records/#{record_id}").parsed_response
+      rescue MultiJson::DecodeError
+      end
+
+      BettyResource::Model::Record.new(self, attributes) if attributes
+    end
+
     def new(attributes = {})
-      BettyResource::Record.new(self, attributes)
+      BettyResource::Model::Record.new(self, attributes)
     end
 
     def create(attributes = {})
@@ -40,12 +49,6 @@ module BettyResource
 
     def to_s
       name
-    end
-
-    def self.parse(input)
-      input.inject({}) do |hash, row|
-        hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
-      end
     end
 
   end

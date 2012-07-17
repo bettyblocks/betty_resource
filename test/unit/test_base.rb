@@ -9,14 +9,14 @@ module Unit
       end
 
       it "should return a new Relation object" do
-        assert BettyResource::Relation.new.is_a?(BettyResource::Record)
+        assert BettyResource::Relation.new.is_a?(BettyResource::Model::Record)
       end
 
-      it "should return the model of a BettyResource::Record" do
+      it "should return the model of a BettyResource::Model::Record" do
         assert_equal BettyResource::Relation, BettyResource::Relation.new.model
       end
 
-      it "should return the attributes for a new BettyResource::Record" do
+      it "should return the attributes for a new BettyResource::Model::Record" do
         relation = BettyResource::Relation.new
         assert_equal ["first_name", "last_name"], relation.attributes.keys.sort
       end
