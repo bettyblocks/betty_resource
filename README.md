@@ -43,6 +43,30 @@ The BettyResource repo is provided with `script/console` which you can use for d
 Run the following command in your console:
 
     $ script/console
+    Loading BettyResource development environment (0.0.5)
+    Configured connection with https://betty-resource-test.bettyblocks.com
+    [1] pry(main)> r = BettyResource::Relation.get 1
+    => #<Relation id: 1, last_name: "Willemse", first_name: "Daniel">
+    [2] pry(main)> r.dirty?
+    => false
+    [3] pry(main)> r.first_name = "Paul"
+    => "Paul"
+    [4] pry(main)> r.dirty?
+    => true
+    [5] pry(main)> r.changes
+    => {"first_name"=>["Daniel", "Paul"]}
+    [6] pry(main)> r.first_name_changed?
+    => true
+    [7] pry(main)> r.first_name_change
+    => ["Daniel", "Paul"]
+    [8] pry(main)> r.first_name_was
+    => "Daniel"
+    [9] pry(main)> r.save
+    => true
+    [10] pry(main)> r.dirty?
+    => false
+    [11] pry(main)> BettyResource::Relation.get(r.id).first_name
+    => "Paul"
 
 ## Testing
 
@@ -52,7 +76,7 @@ Run the following command for testing:
 
 You can also run a single test:
 
-    $ ruby test/unit/test_betty_resource.rb
+    $ ruby test/unit/model/test_record.rb
 
 ## TODO
 
