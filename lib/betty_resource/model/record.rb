@@ -10,15 +10,8 @@ module BettyResource
         self.attributes = attributes
       end
 
-      def save
-        if new_record?
-          result = self.class.post("/models/#{model.id}/records/new", to_params)
-          @id = result.parsed_response["id"].to_i if result.code == 201
-        else
-          result = self.class.put("/models/#{model.id}/records/#{id}", to_params)
-        end
-
-        result.code.to_s[0..1] == "20" # success status codes starts with 20x
+      def new_record?
+        @id.nil?
       end
 
       def attributes
@@ -33,8 +26,19 @@ module BettyResource
         end
       end
 
-      def new_record?
-        @id.nil?
+      def save
+        result = begin
+          if new_record?
+            self.class.post("/models/#{model.id}/records/new", to_params)
+          else
+            self.class.put("/models/#{model.id}/records/#{id}", to_params)
+          end
+        end
+        (result.code.to_s[0..1] == "20").tap do |success|
+          if success
+            model.send :load, result.parsed_response, self
+          end
+        end
       end
 
       def as_json
