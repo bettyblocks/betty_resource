@@ -2,7 +2,7 @@
 require "rubygems"
 require "bundler"
 
-Bundler.require :gem_default, :gem_development
+Bundler.require :gem_default
 
 BettyResource.configure do |config|
   config.host     = "https://betty-resource-test.bettyblocks.com"
