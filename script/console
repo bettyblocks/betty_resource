@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "bundler"
+
+Bundler.require :gem_default, :gem_development
+
+BettyResource.configure do |config|
+  config.host     = "https://betty-resource-test.bettyblocks.com"
+  config.user     = "testuser@bettyblocks.com"
+  config.password = "ensure"
+end
+
+puts "Loading BettyResource development environment (#{BettyResource::VERSION})"
+puts "Configured connection with #{BettyResource.config.host}".yellow
+Pry.start
