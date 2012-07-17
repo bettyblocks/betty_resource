@@ -16,8 +16,11 @@ Add the betty_resource gem to your Gemfile
 
 ===== Import the Betty 5 and application databases
 
-
 *Note*: Use the +--force+ (alias +-f+) option to drop existing databases. Also, <tt>thor db</tt> runs the default Thor task which is <tt>thor db import</tt>
+
+=== TODO
+
+* Typecasting of attributes
 
 === Contact us
 
