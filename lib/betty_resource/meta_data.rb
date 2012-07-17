@@ -1,16 +1,13 @@
-class MetaData
-  include HTTParty
+module BettyResource
+  class MetaData < Base
 
-  base_uri "#{BettyResource.config.host}/api"
-  format :json
-  basic_auth BettyResource.config.user, BettyResource.config.password
+    def initialize
+      @models = BettyResource::Model.parse(self.class.get("/models").parsed_response)
+    end
 
-  def initialize
-    @models = BettyResource::Model.parse(self.class.get("/models").parsed_response)
+    def model(name)
+      @models[name.to_s]
+    end
+
   end
-
-  def model(name)
-    @models[name.to_s]
-  end
-
 end
