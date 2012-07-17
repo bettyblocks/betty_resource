@@ -7,10 +7,7 @@ module BettyResource
         @id = attributes.delete(:id) || attributes.delete("id")
         @model = model
         define_accessors
-
-        attributes.each do |key, value|
-          send "#{key}=", value
-        end
+        self.attributes = attributes
       end
 
       def save
@@ -27,6 +24,12 @@ module BettyResource
       def attributes
         @attributes ||= model.properties.inject(HashWithIndifferentAccess.new) do |hash, property|
           hash.merge(property.name => nil)
+        end
+      end
+
+      def attributes=(values)
+        values.each do |key, value|
+          send "#{key}=", value
         end
       end
 

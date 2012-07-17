@@ -32,8 +32,15 @@ module Unit
           assert_equal "my_first_name", relation.attributes[:first_name]
         end
 
-        it "should allow mass-assignment when initializing a new record" do
+        it "should allow mass-assignment when initializing" do
           relation = BettyResource::Relation.new(:first_name => "my_first_name", :last_name => "my_last_name")
+          assert_equal "my_first_name", relation.first_name
+          assert_equal "my_last_name", relation.last_name
+        end
+
+        it "should allow mass-assignment when already initialized" do
+          relation = BettyResource::Relation.new
+          relation.attributes = {:first_name => "my_first_name", :last_name => "my_last_name"}
           assert_equal "my_first_name", relation.first_name
           assert_equal "my_last_name", relation.last_name
         end
