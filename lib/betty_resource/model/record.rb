@@ -14,6 +14,7 @@ module BettyResource
       def initialize(model, attributes = {})
         @model = model
         @id = attributes.delete(:id) || attributes.delete("id")
+        @errors = {}
         super()
         self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
       end
@@ -22,7 +23,13 @@ module BettyResource
         @id.nil?
       end
 
+      def errors
+        @errors.dup
+      end
+
       def save
+        @errors.clear
+
         result = begin
           if new_record?
             Record.post("/models/#{model.id}/records/new", to_params)
@@ -30,9 +37,12 @@ module BettyResource
             Record.put("/models/#{model.id}/records/#{id}", to_params)
           end
         end
+
         (result.code.to_s[0..1] == "20").tap do |success|
           if success
             model.send :load, result.parsed_response, self
+          else
+            @errors = result.parsed_response["errors"]
           end
         end
       end

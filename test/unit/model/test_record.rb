@@ -75,11 +75,18 @@ module Unit
         it "should not save itself when invalid (first_name is required)" do
           relation = BettyResource::Relation.new
           assert !relation.save
-
-          # TODO: check relation.errors
+          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
 
           relation.first_name = "Stephan"
           assert relation.save
+        end
+
+        it "should have read-only errors messages" do
+          relation = BettyResource::Relation.create
+          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
+
+          relation.errors.clear
+          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
         end
 
         it "should not resave itself when invalid" do
