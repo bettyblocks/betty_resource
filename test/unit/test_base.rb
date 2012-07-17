@@ -1,7 +1,7 @@
 require_relative "../test_helper"
 
 module Unit
-  class TestBettyResource < MiniTest::Unit::TestCase
+  class TestBase < MiniTest::Unit::TestCase
 
     describe BettyResource::Base do
       it "should return a Relation model" do
