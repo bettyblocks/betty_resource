@@ -33,9 +33,9 @@ module BettyResource
     end
 
     def create(attributes = {})
-      record = new(attributes)
-      record.save
-      record
+      new(attributes).tap do |record|
+        record.save
+      end
     end
 
     def to_s
