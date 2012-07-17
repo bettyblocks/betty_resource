@@ -8,7 +8,6 @@ module BettyResource
     attr_accessor :id, :name, :properties
 
     def initialize(id, name, properties = [])
-      # TODO: require id, name
       @id, @name, @properties = id, name, properties
     end
 

@@ -4,7 +4,6 @@ module BettyResource
       attr_accessor :id, :name, :kind
 
       def initialize(id, name, kind)
-        # TODO: require id, name, kind
         @id, @name, @kind = id, name, kind
       end
 
