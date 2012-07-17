@@ -1,7 +1,7 @@
-require_relative '../test_helper'
+require_relative "../test_helper"
 
 module Unit
-  class BettyResourceModelTest < MiniTest::Unit::TestCase
+  class TestBettyResourceModel < MiniTest::Unit::TestCase
 
     describe BettyResource::Model do
       describe "Properties" do

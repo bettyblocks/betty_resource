@@ -1,7 +1,7 @@
-require_relative '../test_helper'
+require_relative "../test_helper"
 
 module Unit
-  class BettyResourceTest < MiniTest::Unit::TestCase
+  class TestBettyResource < MiniTest::Unit::TestCase
 
     describe BettyResource::Base do
       it "should return a Relation model" do
@@ -46,9 +46,9 @@ module Unit
       end
 
       it "should raise NameError when an unknown model is requested" do
-        assert_raises(NameError) {
+        assert_raises(NameError) do
           assert BettyResource::DoesNotExist
-        }
+        end
       end
 
       it "should not load unexising records" do
@@ -65,9 +65,9 @@ module Unit
       it "should not allow setting of id" do
         relation = BettyResource::Relation.get(1)
         assert_equal 1, relation.id
-        assert_raises(NoMethodError) {
+        assert_raises(NoMethodError) do
           assert relation.id = 2
-        }
+        end
       end
 
       it "shoud be able to represent itself as JSON" do
