@@ -41,7 +41,7 @@ module BettyResource
     private
 
       def to_params
-        {:body => {:record => attributes }}
+        {:body => {:record => attributes}}
       end
 
       def define_accessors
