@@ -18,12 +18,12 @@ module BettyResource
     end || super
   end
 
-  def self.config
-    @configuration ||= Configuration.new
-  end
-
   def self.meta_data
     @meta_data ||= MetaData.new
+  end
+
+  def self.config
+    @configuration ||= Configuration.new
   end
 
   def self.configure
