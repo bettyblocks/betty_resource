@@ -3,6 +3,11 @@ module BettyResource
     class Record < Base
       attr_reader :id, :model
 
+      alias :_class :class
+      def class
+        model
+      end
+
       def initialize(model, attributes = {})
         @id = attributes.delete(:id) || attributes.delete("id")
         @model = model
@@ -29,9 +34,9 @@ module BettyResource
       def save
         result = begin
           if new_record?
-            self.class.post("/models/#{model.id}/records/new", to_params)
+            Record.post("/models/#{model.id}/records/new", to_params)
           else
-            self.class.put("/models/#{model.id}/records/#{id}", to_params)
+            Record.put("/models/#{model.id}/records/#{id}", to_params)
           end
         end
         (result.code.to_s[0..1] == "20").tap do |success|
