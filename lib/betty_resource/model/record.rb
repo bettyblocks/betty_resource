@@ -52,8 +52,9 @@ module BettyResource
         "#<#{model.name} #{inspection}>"
       end
 
+      # TODO: Test this update
       def as_json
-        attributes.merge "id" => id
+        attributes_as_json.merge! "id" => id
       end
 
     private
@@ -76,7 +77,15 @@ module BettyResource
       end
 
       def to_params
-        {:body => {:record => attributes}}
+        {:body => {:record => attributes_as_json}}
+      end
+
+      # TODO: Test this update
+      def attributes_as_json
+        attributes.inject({}) do |h, (k, v)|
+          h.merge! k => (v.respond_to?(:as_json) ? v.as_json : v) if v
+          h
+        end
       end
 
     end
