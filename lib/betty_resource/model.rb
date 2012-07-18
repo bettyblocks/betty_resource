@@ -21,9 +21,11 @@ module BettyResource
       properties.collect(&:name)
     end
 
+    # TODO: Refactor this method in order to handle formatted view JSON correctly
     def all(options = {})
       begin
-        self.class.get("/models/#{id}/records", :body => options).parsed_response.collect do |data|
+        response = self.class.get("/models/#{id}/records", :body => options).parsed_response
+        ((view_id = options.delete(:view_id) || options.delete("view_id")).nil? ? response : response["records"]).collect do |data|
           load data
         end
       rescue MultiJson::DecodeError
