@@ -6,7 +6,7 @@ Map Betty5 application resources to Ruby objects through the JSON API!
 
 This gem is created to map resources directly to the Betty5 API with ease. Just include the gem in your Gemfile, configure the Betty5 API credentials and your good to go!
 
-## Setting up / Updating the environment
+## Installation
 
 ### Add `BettyResource` to your Gemfile
 
