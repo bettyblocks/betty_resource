@@ -1,4 +1,5 @@
 require "active_support/dependencies/autoload"
+require "active_support/core_ext/hash/indifferent_access" # See https://gist.github.com/1075643
 require "httparty"
 require "crack/json"
 require "dirty_hashy"
