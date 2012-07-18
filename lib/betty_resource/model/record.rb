@@ -58,6 +58,23 @@ module BettyResource
 
     private
 
+      # TODO: Clean this mess up as this is a dirty quick fix for loading belongs_to properties at the moment
+      def method_missing(method, *args)
+        if method.to_s.match(/^(\w+).id=$/)
+          if model.attributes.include?($1)
+            instance = attributes[$1] ||= begin
+              if property = model.properties.detect{|x| x.name == $1}
+                property.model.new
+              end
+            end
+            if instance
+              return instance.instance_variable_set :@id, args.first
+            end
+          end
+        end
+        super
+      end
+
       def to_params
         {:body => {:record => attributes}}
       end

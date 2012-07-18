@@ -13,6 +13,11 @@ module BettyResource
         @id, @name, @kind, @options = id, name, kind, options
       end
 
+      # TODO: Clean this up as this is a dirty quick fix for loading belongs_to properties at the moment
+      def model
+        BettyResource.meta_data.models.values.detect{|x| x.id == options["model"]} if kind == "belongs_to"
+      end
+
     end
   end
 end
