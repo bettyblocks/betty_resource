@@ -23,6 +23,13 @@ module BettyResource
         @id.nil?
       end
 
+      # TODO: Test this
+      def attributes=(other)
+        other.each do |key, value|
+          send "#{key}=", value
+        end
+      end
+
       def errors
         @errors.dup
       end
