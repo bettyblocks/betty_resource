@@ -54,10 +54,11 @@ module BettyResource
         end
       end
 
-      def to_s
+      def inspect
         inspection = "id: #{id.inspect}, #{attributes.collect{|key, value| "#{key}: #{value.inspect}"}.join(", ")}"
         "#<#{model.name} #{inspection}>"
       end
+      alias :to_s :inspect
 
       # TODO: Test this update
       def as_json
