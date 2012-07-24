@@ -19,8 +19,24 @@ module BettyResource
         self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
       end
 
+      # TODO: Test this
       def new_record?
         @id.nil?
+      end
+
+      # TODO: Test this
+      def changed?
+        attributes.changed?
+      end
+
+      # TODO: Test this
+      def dirty?
+        new_record? || changed?
+      end
+
+      # TODO: Test this
+      def valid?
+        model.properties.all?{|x| x.valid? self}
       end
 
       # TODO: Test this
@@ -30,12 +46,15 @@ module BettyResource
         end
       end
 
+      # TODO: Test this
       def errors
         @errors.dup
       end
 
       def save
-        @errors.clear
+        # TODO: Test this
+        return true unless dirty? || @errors.any?
+        return false unless valid?
 
         result = begin
           if new_record?
@@ -47,6 +66,7 @@ module BettyResource
 
         (result.code.to_s[0..1] == "20").tap do |success|
           if success
+            @errors.clear
             model.send :load, result.parsed_response, self
           else
             @errors = result.parsed_response["errors"]
@@ -60,14 +80,14 @@ module BettyResource
       end
       alias :to_s :inspect
 
-      # TODO: Test this update
+      # TODO: Test this
       def as_json
         attributes_as_json.merge! "id" => id
       end
 
     private
 
-      # TODO: Clean this mess up as this is a dirty quick fix for loading belongs_to properties at the moment
+      # TODO: Clean this up as this is a dirty quick fix for loading belongs_to properties at the moment
       def method_missing(method, *args)
         if method.to_s.match(/^(\w+).id=$/)
           if model.attributes.include?($1)
@@ -88,7 +108,7 @@ module BettyResource
         {:body => {:record => attributes_as_json}}
       end
 
-      # TODO: Test this update
+      # TODO: Test this
       def attributes_as_json
         attributes.inject({}) do |h, (k, v)|
           h.merge! k => (v.respond_to?(:as_json) ? v.as_json : v) if v
