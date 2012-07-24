@@ -7,6 +7,12 @@ require "bundler"
 require "minitest/unit"
 require "minitest/autorun"
 
+require "simplecov"
+
+SimpleCov.start do
+  add_filter "/test/"
+end
+
 Bundler.require :gem_default, :gem_test
 
 BettyResource.configure do |config|
