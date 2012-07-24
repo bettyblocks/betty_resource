@@ -1,8 +1,8 @@
 module BettyResource
-  class MetaData < Base
+  class MetaData
 
     def models
-      @models ||= BettyResource::Model.parse(self.class.get("/models").parsed_response)
+      @models ||= BettyResource::Model.parse(Api.get("/models").parsed_response)
     end
 
     def model(name)

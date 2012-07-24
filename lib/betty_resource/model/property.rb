@@ -1,5 +1,5 @@
 module BettyResource
-  class Model < Base
+  class Model
     class Property
       attr_accessor :id, :name, :kind, :options
 
