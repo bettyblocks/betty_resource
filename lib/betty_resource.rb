@@ -23,12 +23,14 @@ module BettyResource
     @meta_data ||= MetaData.new
   end
 
-  def self.config
-    @configuration ||= Configuration.new
+  def self.config(validate = true)
+    (@configuration ||= Configuration.new).tap do |config|
+      config.validate! if validate
+    end
   end
 
   def self.configure
-    yield config
+    yield config(false)
   end
 
 end
