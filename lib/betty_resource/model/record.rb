@@ -1,6 +1,6 @@
 module BettyResource
-  class Model < Base
-    class Record < Base
+  class Model
+    class Record
 
       include DirtyAttributes::InstanceMethods
       include MethodMap
@@ -39,9 +39,9 @@ module BettyResource
 
         result = begin
           if new_record?
-            Record.post("/models/#{model.id}/records/new", to_params)
+            Api.post("/models/#{model.id}/records/new", to_params)
           else
-            Record.put("/models/#{model.id}/records/#{id}", to_params)
+            Api.put("/models/#{model.id}/records/#{id}", to_params)
           end
         end
 
