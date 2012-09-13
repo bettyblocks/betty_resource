@@ -34,7 +34,6 @@ module BettyResource
         new_record? || changed?
       end
 
-      # TODO: Test this
       def valid?
         !@errors.any?
       end
@@ -46,14 +45,13 @@ module BettyResource
         end
       end
 
-      # TODO: Test this
       def errors
         @errors.dup
       end
 
       def save
         # TODO: Test this
-        return true unless dirty? || @errors.any?
+        return true unless dirty?
 
         result = begin
           if new_record?
