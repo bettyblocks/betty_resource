@@ -1,5 +1,5 @@
 module BettyResource
-  class Model < Base
+  class Model
     extend ActiveSupport::Autoload
 
     autoload :Record
@@ -24,7 +24,7 @@ module BettyResource
     # TODO: Refactor this method in order to handle formatted view JSON correctly
     def all(options = {})
       begin
-        response = self.class.get("/models/#{id}/records", :body => options).parsed_response
+        response = Api.get("/models/#{id}/records", :body => options).parsed_response
         ((view_id = options.delete(:view_id) || options.delete("view_id")).nil? ? response : response["records"]).collect do |data|
           load data
         end
@@ -34,7 +34,7 @@ module BettyResource
 
     def get(record_id)
       begin
-        load self.class.get("/models/#{id}/records/#{record_id}").parsed_response
+        load Api.get("/models/#{id}/records/#{record_id}").parsed_response
       rescue MultiJson::DecodeError
       end
     end
