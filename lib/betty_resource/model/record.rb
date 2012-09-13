@@ -36,7 +36,7 @@ module BettyResource
 
       # TODO: Test this
       def valid?
-        model.properties.all?{|x| x.valid? self}
+        !@errors.any?
       end
 
       # TODO: Test this
@@ -54,7 +54,6 @@ module BettyResource
       def save
         # TODO: Test this
         return true unless dirty? || @errors.any?
-        return false unless valid?
 
         result = begin
           if new_record?

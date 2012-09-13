@@ -81,6 +81,14 @@ module Unit
           assert relation.save
         end
 
+        it "should return invalid if there are errors" do
+          relation = BettyResource::Relation.new
+          assert !relation.save
+          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
+
+          assert !relation.valid?
+        end
+
         it "should have read-only errors messages" do
           relation = BettyResource::Relation.create
           assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
