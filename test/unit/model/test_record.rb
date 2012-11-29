@@ -12,7 +12,7 @@ module Unit
 
         it "should return its attributes" do
           relation = BettyResource::Relation.new
-          assert_equal ["first_name", "last_name"], relation.attributes.keys.sort
+          assert_equal %w(first_name id last_name), relation.attributes.keys.sort
         end
 
         it "should create a method for writing each attribute" do
@@ -49,9 +49,8 @@ module Unit
         it "should not allow setting of id" do
           relation = BettyResource::Relation.get(1)
           assert_equal 1, relation.id
-          assert_raises(NoMethodError) do
-            assert relation.id = 2
-          end
+          assert relation.id = 2
+          assert_equal 1, relation.id
         end
 
         it "should be able to represent itself as JSON" do
@@ -75,7 +74,7 @@ module Unit
         it "should not save itself when invalid (first_name is required)" do
           relation = BettyResource::Relation.new
           assert !relation.save
-          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
+          assert_equal({"first_name"=>["is_required"]}, relation.errors)
 
           relation.first_name = "Stephan"
           assert relation.save
@@ -83,10 +82,10 @@ module Unit
 
         it "should have read-only errors messages" do
           relation = BettyResource::Relation.create
-          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
+          assert_equal({"first_name"=>["is_required"]}, relation.errors)
 
           relation.errors.clear
-          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
+          assert_equal({"first_name"=>["is_required"]}, relation.errors)
         end
 
         it "should not resave itself when invalid" do
