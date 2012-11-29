@@ -81,27 +81,6 @@ module Unit
           assert relation.save
         end
 
-        it "should return invalid if there are errors" do
-          relation = BettyResource::Relation.new
-          relation.save
-
-          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
-
-          assert !relation.valid?
-        end
-
-        it "should update errors after " do
-          relation = BettyResource::Relation.new
-          relation.save
-
-          assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
-
-          relation.first_name = "Bruce"
-          relation.save
-
-          assert_equal({}, relation.errors)
-        end
-
         it "should have read-only errors messages" do
           relation = BettyResource::Relation.create
           assert_equal({"first_name"=>["moet ingevuld zijn"]}, relation.errors)
@@ -111,7 +90,7 @@ module Unit
         end
 
         it "should not resave itself when invalid" do
-          relation = BettyResource::Relation.new(:first_name => "Piet")
+          relation = BettyResource::Relation.new :first_name => "Piet"
           assert relation.save
 
           relation.first_name = ""

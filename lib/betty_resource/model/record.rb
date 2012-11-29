@@ -1,6 +1,6 @@
 module BettyResource
-  class Model
-    class Record
+  class Model < Base
+    class Record < Base
 
       include DirtyAttributes::InstanceMethods
       include MethodMap
@@ -19,23 +19,8 @@ module BettyResource
         self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
       end
 
-      # TODO: Test this
       def new_record?
         @id.nil?
-      end
-
-      # TODO: Test this
-      def changed?
-        attributes.changed?
-      end
-
-      # TODO: Test this
-      def dirty?
-        new_record? || changed?
-      end
-
-      def valid?
-        !@errors.any?
       end
 
       # TODO: Test this
@@ -50,20 +35,18 @@ module BettyResource
       end
 
       def save
-        # TODO: Test this
-        return true unless dirty?
+        @errors.clear
 
         result = begin
           if new_record?
-            Api.post("/models/#{model.id}/records/new", to_params)
+            Record.post("/models/#{model.id}/records/new", to_params)
           else
-            Api.put("/models/#{model.id}/records/#{id}", to_params)
+            Record.put("/models/#{model.id}/records/#{id}", to_params)
           end
         end
 
         (result.code.to_s[0..1] == "20").tap do |success|
           if success
-            @errors.clear
             model.send :load, result.parsed_response, self
           else
             @errors = result.parsed_response["errors"]
@@ -84,7 +67,7 @@ module BettyResource
 
     private
 
-      # TODO: Clean this up as this is a dirty quick fix for loading belongs_to properties at the moment
+      # TODO: Clean this mess up as this is a dirty quick fix for loading belongs_to properties at the moment
       def method_missing(method, *args)
         if method.to_s.match(/^(\w+).id=$/)
           if model.attributes.include?($1)

@@ -1,5 +1,5 @@
 module BettyResource
-  class Api
+  class Base
     include HTTParty
 
     base_uri "#{BettyResource.config.host}/api"

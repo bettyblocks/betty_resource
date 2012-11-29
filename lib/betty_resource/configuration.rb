@@ -2,12 +2,13 @@ require "singleton"
 
 module BettyResource
   class Configuration
-    class InvalidError < StandardError; end
-
     attr_accessor :host, :user, :password
 
     def validate!
-      raise InvalidError if [:host, :user, :password].any?{|option| send(option).to_s.strip.empty?}
+      raise InvalidConfigurationError if [:host, :user, :password].any?{|option| send(option).blank?}
+    end
+
+    class InvalidConfigurationError < StandardError
     end
 
   end

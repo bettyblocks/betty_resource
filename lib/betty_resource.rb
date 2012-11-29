@@ -1,6 +1,5 @@
 require "active_support/dependencies/autoload"
 require "active_support/core_ext/hash/indifferent_access" # See https://gist.github.com/1075643
-
 require "httparty"
 require "crack/json"
 require "dirty_hashy"
@@ -8,7 +7,7 @@ require "dirty_hashy"
 module BettyResource
   extend ActiveSupport::Autoload
 
-  autoload :Api
+  autoload :Base
   autoload :Configuration
   autoload :MetaData
   autoload :Model
@@ -23,14 +22,12 @@ module BettyResource
     @meta_data ||= MetaData.new
   end
 
-  def self.config(validate = true)
-    (@configuration ||= Configuration.new).tap do |config|
-      config.validate! if validate
-    end
+  def self.config
+    @configuration ||= Configuration.new
   end
 
   def self.configure
-    yield config(false)
+    yield config
   end
 
 end
