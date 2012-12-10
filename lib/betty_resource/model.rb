@@ -1,9 +1,7 @@
 module BettyResource
   class Model
-    extend ActiveSupport::Autoload
-
-    autoload :Record
-    autoload :Property
+    autoload :Record, "betty_resource/model/record"
+    autoload :Property, "betty_resource/model/property"
 
     attr_accessor :id, :name, :properties
 
