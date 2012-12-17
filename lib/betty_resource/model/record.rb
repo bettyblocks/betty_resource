@@ -49,7 +49,7 @@ module BettyResource
           if success
             model.send :load, result.parsed_response, self
           else
-            @errors = result.parsed_response["errors"]
+            @errors = result.parsed_response ? result.parsed_response["errors"] : {"" => ["Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak"]}
           end
         end
       end
