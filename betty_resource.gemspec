@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name        = "betty_resource"
   gem.version     = BettyResource::VERSION
   gem.authors     = ["Chiel Wester", "Stephan Kaag", "Daniel Willemse", "Paul Engel"]
-  gem.email       = ["chiel.wester@holder.nl", "stephan.kaag@holder.nl", "daniel.willemse@holder.nl", "paul.engel@holder.nl"]
+  gem.email       = ["chiel.wester@holder.nl", "stephan.kaag@bettyblocks.com", "daniel.willemse@holder.nl", "paul.engel@bettyblocks.com"]
   gem.description = %q{Map Betty5 application resources to Ruby objects through the JSON API}
   gem.summary     = %q{Map Betty5 application resources to Ruby objects}
   gem.homepage    = "https://github.com/bettyblocks/betty_resource"

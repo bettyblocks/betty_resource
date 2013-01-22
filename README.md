@@ -84,10 +84,10 @@ You can also run a single test:
 
 ## Contact us
 
-For support, remarks and requests, please mail us at [techteam@holder.nl](mailto:techteam@holder.nl).
+For support, remarks and requests, please mail us at [support@bettyblocks.com](mailto:support@bettyblocks.com).
 
 ## License
 
-Copyright (c) 2012 Internetbureau Holder B.V.
+Copyright (c) 2013 BettyBlocks B.V.
 
-[http://holder.nl](http://holder.nl) - [info@holder.nl](mailto:info@holder.nl)
+[http://bettyblocks.com](http://bettyblocks.com) - [info@bettyblocks.com](mailto:info@bettyblocks.com)
