@@ -15,9 +15,4 @@ SimpleCov.start do
 end
 
 Bundler.require :gem_default, :gem_test
-
-BettyResource.configure do |config|
-  config.host     = "https://betty-resource-test.bettyblocks.com"
-  config.user     = "testuser@bettyblocks.com"
-  config.password = "ensure"
-end
+BettyResource.configure(MultiJson.decode(File.read(File.expand_path('../../.credentials', __FILE__))))

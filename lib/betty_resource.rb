@@ -26,8 +26,14 @@ module BettyResource
     end
   end
 
-  def self.configure
-    yield config(false)
+  def self.configure(configuration = nil)
+    if configuration
+      @configuration = Configuration.new(configuration).tap do |config|
+        config.validate!
+      end
+    else
+      yield config(false)
+    end
   end
 
 end

@@ -43,8 +43,8 @@ The BettyResource repo is provided with `script/console` which you can use for d
 Run the following command in your console:
 
     $ script/console
-    Loading BettyResource development environment (0.0.5)
-    Configured connection with https://betty-resource-test.bettyblocks.com
+    Loading BettyResource development environment
+    Configured connection
     [1] pry(main)> r = BettyResource::Relation.get 1
     => #<Relation id: 1, last_name: "Willemse", first_name: "Daniel">
     [2] pry(main)> r.dirty?
