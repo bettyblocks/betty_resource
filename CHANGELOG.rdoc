@@ -1,5 +1,16 @@
 = BettyResource CHANGELOG
 
-== Version 0.0.5 (March 01, 2012)
+=== Version 0.0.5 / 2012-03-01
 
 * Created by Chiel
+
+=== Version 0.0.6 / 2013-01-22
+
+=== Version 0.0.7 / 2013-01-22
+
+* 5 improvements:
+
+  * Add changelog generation script
+  * Adjust author information
+  * Remove some sensitive details
+  * We have a hard dependency on multi_json
