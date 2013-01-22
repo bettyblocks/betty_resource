@@ -2,7 +2,7 @@ ENV["RACK_ENV"] = "test"
 ENV["TESTOPTS"] = "-v"
 
 require "rubygems"
-require "bundler"
+require "bundler/setup"
 
 require "minitest/unit"
 require "minitest/autorun"
