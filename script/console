@@ -2,9 +2,15 @@
 require "rubygems"
 require "bundler/setup"
 
-Bundler.require :gem_default
+Bundler.require :gem_default, :gem_development
 
-BettyResource.configure(MultiJson.decode(File.read(File.expand_path('../../.credentials', __FILE__))))
+if File.exists?(file = File.expand_path('../../.credentials', __FILE__))
+  BettyResource.configure MultiJson.decode(File.read(file))
+end
+
+if File.exists?(file = File.expand_path('../../credentials.yaml', __FILE__))
+  BettyResource.configure YAML.load_file(file)
+end
 
 puts "Loading BettyResource development environment (#{BettyResource::VERSION})"
 puts "Configured connection with #{BettyResource.config.host}".yellow

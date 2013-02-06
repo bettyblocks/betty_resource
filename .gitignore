@@ -6,3 +6,4 @@ coverage/*
 pkg/*
 Gemfile.lock
 .credentials
+credentials.yaml
