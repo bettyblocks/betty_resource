@@ -1,7 +1,7 @@
 require_relative "../test_helper"
 
 module Unit
-  class TestBase < MiniTest::Unit::TestCase
+  class TestConfiguration < MiniTest::Unit::TestCase
 
     describe BettyResource::Configuration do
       it "should be able to validate itself" do

@@ -2,11 +2,10 @@ module BettyResource
   class MetaData
 
     def models
-      @models ||= BettyResource::Model.parse(Api.get("/models").parsed_response)
-    end
-
-    def model(name)
-      models[name.to_s]
+      @models ||= Api.get("/models").parsed_response.inject({}) do |models, data|
+        m = BettyResource::Model.parse data
+        models.merge! m.name => m
+      end
     end
 
   end

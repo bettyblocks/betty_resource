@@ -1,7 +1,7 @@
 require_relative "../../test_helper"
 
 module Unit
-  module Record
+  module Model
     class TestRecord < MiniTest::Unit::TestCase
 
       describe BettyResource::Model::Record do
@@ -12,7 +12,11 @@ module Unit
 
         it "should return its attributes" do
           relation = BettyResource::Relation.new
-          assert_equal %w(first_name id last_name), relation.attributes.keys.sort
+          assert_equal %w(), relation.attributes.keys.sort
+          relation.first_name
+          assert_equal %w(first_name), relation.attributes.keys.sort
+          relation.last_name
+          assert_equal %w(first_name last_name), relation.attributes.keys.sort
         end
 
         it "should create a method for writing each attribute" do
@@ -30,7 +34,7 @@ module Unit
         it "should store its values in the @attributes instance variable" do
           relation = BettyResource::Relation.new
           relation.first_name = "my_first_name"
-          assert_equal "my_first_name", relation.attributes[:first_name]
+          assert_equal "my_first_name", relation.attributes["first_name"]
         end
 
         it "should allow mass-assignment when initializing" do

@@ -1,44 +1,39 @@
+require "betty_resource/model/property"
+require "betty_resource/model/record"
+
 module BettyResource
   class Model
-    autoload :Record, "betty_resource/model/record"
-    autoload :Property, "betty_resource/model/property"
+    attr_reader :id, :name, :properties
 
-    attr_accessor :id, :name, :properties
-
-    def self.parse(input)
-      input.inject({}) do |hash, row|
-        hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
+    def self.parse(data)
+      new.tap do |model|
+        model.instance_variable_set :@id, data["id"]
+        model.instance_variable_set :@name, data["name"]
+        model.instance_variable_set :@properties, data["properties"].collect{|d| Property.parse(d)}
       end
-    end
-
-    def initialize(id, name, properties = [])
-      @id, @name, @properties = id, name, properties
     end
 
     def attributes
       properties.collect(&:name)
     end
 
-    # TODO: Refactor this method in order to handle formatted view JSON correctly
-    def all(options = {})
-      begin
-        response = Api.get("/models/#{id}/records", :body => options).parsed_response
-        ((view_id = options.delete(:view_id) || options.delete("view_id")).nil? ? response : response["records"]).collect do |data|
-          load data
-        end
-      rescue MultiJson::DecodeError
-      end
-    end
-
-    def get(record_id)
-      begin
-        load Api.get("/models/#{id}/records/#{record_id}").parsed_response
-      rescue MultiJson::DecodeError
+    def properties_map
+      @properties_map ||= properties.inject({}) do |map, property|
+        map[property.name] = BettyResource::Model::Property::Types.const_get camelize(property.type) unless property.name == "id"
+        map
       end
     end
 
     def new(attributes = {})
       BettyResource::Model::Record.new(self, attributes)
+    end
+
+    def get(id)
+      load Api.get("/models/#{self.id}/records/#{id}").parsed_response
+    end
+
+    def all(options = {})
+      Api.get("/models/#{id}/records", :body => options).parsed_response.collect{|data| load data}
     end
 
     def create(attributes = {})
@@ -47,19 +42,23 @@ module BettyResource
       end
     end
 
-    def to_s
-      name
+    def inspect
+      "BettyResource::#{name}"
     end
+    alias :to_s :inspect
 
   private
+
+    def camelize(word)
+      word.split(/[^a-z0-9]/i).collect{|x| x.capitalize}.join
+    end
 
     def load(data, record = nil)
       if data
         id = data.delete "id"
         (record || BettyResource::Model::Record.new(self)).tap do |record|
           record.instance_variable_set :@id, id
-          record.attributes = data
-          record.clean_up!
+          record.send(:state).instance_variable_set :@raw_attributes, data
         end
       end
     end

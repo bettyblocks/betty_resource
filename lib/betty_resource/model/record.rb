@@ -1,99 +1,94 @@
+require "betty_resource/model/record/state"
+
 module BettyResource
   class Model
     class Record
-
-      include DirtyAttributes::InstanceMethods
-      include MethodMap
       attr_reader :id, :model
+
+      def initialize(model, attributes = {})
+        @model = model
+        send :attributes=, attributes
+      end
 
       alias :_class :class
       def class
         model
       end
 
-      def initialize(model, attributes = {})
-        @model = model
-        @id = attributes.delete(:id) || attributes.delete("id")
-        @errors = {}
-        super()
-        self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
-      end
-
       def new_record?
         @id.nil?
       end
 
-      # TODO: Test this
-      def attributes=(other)
-        other.each do |key, value|
-          send "#{key}=", value
+      def id=(value)
+      end
+
+      def attributes=(attrs)
+        attrs.each do |name, value|
+          state.write name, value
         end
+      end
+
+      def attributes
+        state.attributes
+      end
+
+      def changes
+        state.changes
       end
 
       def errors
-        @errors.dup
+        state.errors.dup
       end
 
       def save
-        @errors.clear
+        state.errors.clear
 
-        result = begin
+        response = begin
           if new_record?
-            Api.post("/models/#{model.id}/records/new", to_params)
+            Api.post("/models/#{model.id}/records/new", {:body => {:record => as_json}})
           else
-            Api.put("/models/#{model.id}/records/#{id}", to_params)
+            Api.put("/models/#{model.id}/records/#{id}", {:body => {:record => as_json}})
           end
         end
 
-        (result.code.to_s[0..1] == "20").tap do |success|
+        parsed_response = response.parsed_response
+
+        (response.code.to_s[0..1] == "20").tap do |success|
           if success
-            model.send :load, result.parsed_response, self
+            model.send :load, parsed_response, self
           else
-            @errors = result.parsed_response ? result.parsed_response["errors"] : {"" => ["Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak"]}
+            msg = "Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak"
+            state.errors = parsed_response ? parsed_response["errors"] : {"" => [msg]}
           end
+        end
+      end
+
+      def as_json
+        {"id" => id}.merge state.as_json
+      end
+
+      def method_missing(method, *args)
+        begin
+          m = method.to_s
+          if m.match(/=$/)
+            state.write m.gsub(/=$/, ""), *args
+          else
+            state.read m
+          end
+        rescue State::InvalidNameError => e
+          super
         end
       end
 
       def inspect
-        inspection = "id: #{id.inspect}, #{attributes.collect{|key, value| "#{key}: #{value.inspect}"}.join(", ")}"
-        "#<#{model.name} #{inspection}>"
+        "#<#{model.name} @id=#{id.inspect}#{state.inspect}>"
       end
       alias :to_s :inspect
 
-      # TODO: Test this update
-      def as_json(options = {})
-        attributes_as_json(options).merge! "id" => id
-      end
-
     private
 
-      # TODO: Clean this mess up as this is a dirty quick fix for loading belongs_to properties at the moment
-      def method_missing(method, *args)
-        if method.to_s.match(/^(\w+).id=$/)
-          if model.attributes.include?($1)
-            instance = attributes[$1] ||= begin
-              if property = model.properties.detect{|x| x.name == $1}
-                property.model.new
-              end
-            end
-            if instance
-              return instance.instance_variable_set :@id, args.first
-            end
-          end
-        end
-        super
-      end
-
-      def to_params
-        {:body => {:record => attributes_as_json}}
-      end
-
-      # TODO: Test this update
-      def attributes_as_json(options = {})
-        attributes.inject({}) do |h, (k, v)|
-          h.merge! k => (v.respond_to?(:as_json) ? v.as_json(options) : v) if v
-          h
-        end
+      def state
+        @state ||= State.new model
       end
 
     end

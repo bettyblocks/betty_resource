@@ -1,21 +1,16 @@
+require "betty_resource/model/property/types"
+
 module BettyResource
   class Model
     class Property
-      attr_accessor :id, :name, :kind, :options
+      attr_reader :id, :name, :type
 
-      def self.parse(input)
-        input.collect do |row|
-          Property.new(row["id"], row["name"], row["kind"], row["options"])
+      def self.parse(data)
+        new.tap do |property|
+          property.instance_variable_set :@id, data["id"]
+          property.instance_variable_set :@name, data["name"]
+          property.instance_variable_set :@type, data["kind"]
         end
-      end
-
-      def initialize(id, name, kind, options)
-        @id, @name, @kind, @options = id, name, kind, options
-      end
-
-      # TODO: Clean this up as this is a dirty quick fix for loading belongs_to properties at the moment
-      def model
-        BettyResource.meta_data.models.values.detect{|x| x.id == options["model"]} if kind == "belongs_to"
       end
 
     end
