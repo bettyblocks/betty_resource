@@ -11,5 +11,4 @@ end
 group :gem_test do
   gem "minitest"
   gem "mocha", :require => "mocha/setup"
-  gem "simplecov", ">= 0.4.0"
 end
