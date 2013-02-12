@@ -30,7 +30,7 @@ module BettyResource
 
   def self.const_missing(name)
     if m = meta_data.models[name.to_s]
-      const_set name, m
+      const_set name, m.record_class
     else
       super
     end

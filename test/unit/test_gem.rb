@@ -27,7 +27,8 @@ module Unit
       end
 
       it "should return a model instance" do
-        assert_equal true, BettyResource::Relation.is_a?(BettyResource::Model)
+        assert_equal true, BettyResource::Relation.is_a?(Class)
+        assert_equal true, BettyResource::Relation.new.is_a?(BettyResource::Model::Record)
       end
 
       it "should raise NameError when an unknown model is requested" do

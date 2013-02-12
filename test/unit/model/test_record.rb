@@ -5,11 +5,6 @@ module Unit
     class TestRecord < MiniTest::Unit::TestCase
 
       describe BettyResource::Model::Record do
-        it "should return its model" do
-          assert_equal BettyResource::Relation, BettyResource::Relation.new.model
-          assert_equal BettyResource::Relation, BettyResource::Relation.new.class
-        end
-
         it "should return its attributes" do
           relation = BettyResource::Relation.new
           assert_equal %w(), relation.attributes.keys.sort

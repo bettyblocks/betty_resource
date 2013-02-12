@@ -7,8 +7,8 @@ module BettyResource
 
         attr_reader :raw_attributes, :attributes, :variables, :changes, :errors
 
-        def initialize(model)
-          @model = model
+        def initialize(record_class)
+          @record_class = record_class
           @raw_attributes = {}
           @attributes = {}
           @variables = {}
@@ -20,7 +20,7 @@ module BettyResource
           assert_valid_name!(name = name.to_s)
 
           unless attributes.include?(name)
-            attributes[name] = @model.properties_map[name].typecast_json(raw_attributes[name])
+            attributes[name] = @record_class.properties_map[name].typecast_json(raw_attributes[name])
             raw_attributes.delete name
           end
 
@@ -29,7 +29,7 @@ module BettyResource
 
         def write(name, value)
           assert_valid_name!(name = name.to_s)
-          attributes[name] = @model.properties_map[name].typecast(value)
+          attributes[name] = @record_class.properties_map[name].typecast(value)
           value
         end
 
@@ -38,20 +38,20 @@ module BettyResource
         end
 
         def as_json(options = {})
-          @model.properties_map.inject({}) do |json, (name, type)|
+          @record_class.properties_map.inject({}) do |json, (name, type)|
             json[name] = type.format_json read(name)
             json
           end
         end
 
         def inspect
-          @model.properties_map.collect{|name, type| " @#{name}=#{inspect_value(name)}"}.join
+          @record_class.properties_map.collect{|name, type| " @#{name}=#{inspect_value(name)}"}.join
         end
 
       private
 
         def assert_valid_name!(name)
-          raise InvalidNameError, "Invalid name '#{name}' for #{@model}" unless @model.properties_map.keys.include?(name)
+          raise InvalidNameError, "Invalid name '#{name}' for #{@record_class.name}" unless @record_class.properties_map.keys.include?(name)
         end
 
         def inspect_value(name)

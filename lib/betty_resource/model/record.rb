@@ -3,16 +3,47 @@ require "betty_resource/model/record/state"
 module BettyResource
   class Model
     class Record
-      attr_reader :id, :model
+      attr_reader :id
 
-      def initialize(model, attributes = {})
-        @model = model
+      def self.model
+        @model
+      end
+
+      def self.attributes
+        @attributes ||= model.properties.collect(&:name)
+      end
+
+      def self.properties_map
+        @properties_map ||= model.properties.inject({}) do |map, property|
+          map[property.name] = BettyResource::Model::Property::Types.const_get camelize(property.type) unless property.name == "id"
+          map
+        end
+      end
+
+      def self.all(options = {})
+        Api.get("/models/#{model.id}/records", :body => options).parsed_response.collect{|data| load data}
+      end
+
+      def self.create(attributes = {})
+        new(attributes).tap do |record|
+          record.save
+        end
+      end
+
+      def self.get(id)
+        load Api.get("/models/#{model.id}/records/#{id}").parsed_response
+      end
+
+      def self.name
+        "BettyResource::#{model.name}"
+      end
+
+      def initialize(attributes = {})
         send :attributes=, attributes
       end
 
-      alias :_class :class
-      def class
-        model
+      def model
+        self.class.model
       end
 
       def new_record?
@@ -55,7 +86,7 @@ module BettyResource
 
         (response.code.to_s[0..1] == "20").tap do |success|
           if success
-            model.send :load, parsed_response, self
+            self.class.send :load, parsed_response, self
           else
             msg = "Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak"
             state.errors = parsed_response ? parsed_response["errors"] : {"" => [msg]}
@@ -67,28 +98,29 @@ module BettyResource
         {"id" => id}.merge state.as_json
       end
 
-      def method_missing(method, *args)
-        begin
-          m = method.to_s
-          if m.match(/=$/)
-            state.write m.gsub(/=$/, ""), *args
-          else
-            state.read m
-          end
-        rescue State::InvalidNameError => e
-          super
-        end
-      end
-
       def inspect
-        "#<#{model.name} @id=#{id.inspect}#{state.inspect}>"
+        "#<#{self.class.name} @id=#{id.inspect}#{state.inspect}>"
       end
       alias :to_s :inspect
 
     private
 
+      def self.camelize(word)
+        word.split(/[^a-z0-9]/i).collect{|x| x.capitalize}.join
+      end
+
+      def self.load(data, record = nil)
+        if data
+          id = data.delete "id"
+          (record || new).tap do |record|
+            record.instance_variable_set :@id, id
+            record.send(:state).instance_variable_set :@raw_attributes, data
+          end
+        end
+      end
+
       def state
-        @state ||= State.new model
+        @state ||= State.new self.class
       end
 
     end

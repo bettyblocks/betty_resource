@@ -5,9 +5,9 @@ module Unit
 
     describe BettyResource::Model do
       it "should know its properties" do
-        assert_equal true, BettyResource::Relation.properties.is_a?(Array)
-        assert_equal true, BettyResource::Relation.properties.any?
-        assert_equal true, BettyResource::Relation.properties.all?{|p| p.is_a?(BettyResource::Model::Property)}
+        assert_equal true, BettyResource::Relation.model.properties.is_a?(Array)
+        assert_equal true, BettyResource::Relation.model.properties.any?
+        assert_equal true, BettyResource::Relation.model.properties.all?{|p| p.is_a?(BettyResource::Model::Property)}
       end
 
       it "should know its attributes" do
