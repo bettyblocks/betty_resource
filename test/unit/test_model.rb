@@ -29,6 +29,19 @@ module Unit
         assert_equal "Willemse", relation.last_name
       end
 
+      it "should fetch a first record" do
+        relation = BettyResource::Relation.first
+        assert_equal 1, relation.id
+        assert_equal "Daniel", relation.first_name
+        assert_equal "Willemse", relation.last_name
+
+        relation = BettyResource::Relation.first :filters => {:path => BettyResource::Relation.property(:last_name).id, :predicate => "eq", :criteria => "Piet"}
+        assert_nil relation
+
+        relation = BettyResource::Relation.first :filters => {:path => BettyResource::Relation.property(:last_name).id, :predicate => "eq", :criteria => "Willemse"}
+        assert_equal 1, relation.id
+      end
+
       it "should fetch multiple records" do
         relations = BettyResource::Relation.all
         assert_equal 100, relations.size

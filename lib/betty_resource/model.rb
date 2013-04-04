@@ -15,6 +15,10 @@ module BettyResource
       @id, @name, @properties = id, name, properties
     end
 
+    def property(name)
+      properties.detect{|p|p.name == name.to_s}
+    end
+
     def attributes
       properties.collect(&:name)
     end
@@ -35,6 +39,10 @@ module BettyResource
         load Api.get("/models/#{id}/records/#{record_id}").parsed_response
       rescue MultiJson::DecodeError
       end
+    end
+
+    def first(options = {})
+      all(options.merge(:limit => 1)).first
     end
 
     def new(attributes = {})
