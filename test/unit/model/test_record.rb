@@ -12,7 +12,7 @@ module Unit
 
         it "should return its attributes" do
           relation = BettyResource::Relation.new
-          assert_equal %w(first_name id last_name), relation.attributes.keys.sort
+          assert_equal %w(first_name group id last_name), relation.attributes.keys.sort
         end
 
         it "should create a method for writing each attribute" do
@@ -58,7 +58,7 @@ module Unit
           assert_equal({"id" => nil, "first_name" => "Paul", "last_name" => "Engel"}, relation.as_json)
 
           relation = BettyResource::Relation.get(1)
-          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse"}, relation.as_json)
+          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse", "group"=>{"id"=>nil}}, relation.as_json)
         end
 
         it "should save itself" do

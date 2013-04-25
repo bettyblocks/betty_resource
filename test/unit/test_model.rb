@@ -11,7 +11,7 @@ module Unit
       end
 
       it "should know its attributes" do
-        assert_equal %w(first_name id last_name), BettyResource::Relation.attributes.sort
+        assert_equal %w(first_name group id last_name), BettyResource::Relation.attributes.sort
       end
 
       it "should return a new record instance" do
