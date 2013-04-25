@@ -10,6 +10,6 @@ end
 
 group :gem_test do
   gem "minitest"
-  gem "mocha", :require => "mocha/setup"
+  gem "mocha", ">= 0.13.3", :require => "mocha/setup"
   gem "simplecov", ">= 0.4.0"
 end
