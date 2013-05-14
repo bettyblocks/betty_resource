@@ -14,7 +14,7 @@ module BettyResource
       end
 
       def typecast(value)
-        if kind == "belongs_to" && id = value["id"]
+        if kind == "belongs_to" && id = (value && value["id"])
           model.get(id)
         else
           value
