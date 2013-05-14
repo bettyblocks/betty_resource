@@ -58,7 +58,8 @@ module Unit
           assert_equal({"id" => nil, "first_name" => "Paul", "last_name" => "Engel"}, relation.as_json)
 
           relation = BettyResource::Relation.get(1)
-          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse", "group"=>{"id"=>nil}}, relation.as_json)
+          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse", "group"=>{"id"=>1}}, relation.as_json)
+          assert_equal({"id" => 1, "name" => "group one"}, relation.group.as_json)
         end
 
         it "should save itself" do
@@ -108,6 +109,24 @@ module Unit
 
           relation = BettyResource::Relation.get(relation.id)
           assert_equal "Stephan", relation.first_name
+        end
+
+        it "should be able to fetch a belongs-to value" do
+          relation = BettyResource::Relation.get(1)
+          assert_equal 1, relation.group.id
+
+          filter = {
+            "operator" => "and",
+            "conditions" => [
+              "path" => [BettyResource::Relation.property(:id).id],
+              "predicate" => "eq",
+              "criteria" => 1
+            ]
+          }
+
+          relations = BettyResource::Relation.all(:filters => [filter])
+          assert_equal 1, relations.size
+          assert_equal 1, relations[0].group.id
         end
       end
 
