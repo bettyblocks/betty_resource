@@ -1,5 +1,11 @@
 = BettyResource CHANGELOG
 
+=== 0.0.10 / 2013-05-14
+
+* 1 bugfix:
+
+  * Correct belongs-to properties for new records
+
 === 0.0.9 / 2013-05-14
 
 * 4 improvements:
