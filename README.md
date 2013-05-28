@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/bettyblocks/betty_resource.png)](https://codeclimate.com/github/bettyblocks/betty_resource)
+
 # BettyResource
 
 Map Betty5 application resources to Ruby objects through the JSON API!
