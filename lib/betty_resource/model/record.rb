@@ -69,7 +69,7 @@ module BettyResource
           end
         end
 
-        (result.code.to_s[0..1] == "20").tap do |success|
+        result.success?.tap do |success|
           if success
             model.send :load, result.parsed_response, self
           else
