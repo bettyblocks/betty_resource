@@ -58,7 +58,7 @@ module Unit
           assert_equal({"id" => nil, "first_name" => "Paul", "last_name" => "Engel"}, relation.as_json)
 
           relation = BettyResource::Relation.get(1)
-          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse", "group"=>{"id"=>1}}, relation.as_json)
+          assert_equal({"id" => 1, "first_name" => "Daniel", "last_name" => "Willemse", "group"=>{"id"=>1, "name" => "group one"}}, relation.as_json)
           assert_equal({"id" => 1, "name" => "group one"}, relation.group.as_json)
         end
 
