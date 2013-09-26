@@ -92,7 +92,7 @@ module BettyResource
     private
 
       def to_params
-        {:body => {:record => attributes_as_json}}
+        {:body => {:record => attributes_as_json}, :headers => {"Content-Type" => "application/json"}}
       end
 
       # TODO: Test this update

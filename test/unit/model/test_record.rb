@@ -72,6 +72,15 @@ module Unit
           assert_equal "Kaag", relation.last_name
         end
 
+        it "should save itself when an %-character is used" do
+          relation = BettyResource::Relation.new(:first_name => "Stephan%")
+          assert relation.save
+          assert relation.id > 0
+
+          relation = BettyResource::Relation.get(relation.id)
+          assert_equal "Stephan%", relation.first_name
+        end
+
         it "should not save itself when invalid (first_name is required)" do
           relation = BettyResource::Relation.new
           assert !relation.save
