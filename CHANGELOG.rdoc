@@ -1,5 +1,11 @@
 = BettyResource CHANGELOG
 
+=== 0.0.11 / 2013-09-26
+
+* 1 bugfix:
+
+  * Set content-type header to application/json when posting
+
 === 0.0.10 / 2013-05-14
 
 * 1 bugfix:
