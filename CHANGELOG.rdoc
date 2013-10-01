@@ -1,5 +1,11 @@
 = BettyResource CHANGELOG
 
+=== 0.0.12 / 2013-10-01
+
+* 1 adjustment:
+
+  * Add license info
+
 === 0.0.11 / 2013-09-26
 
 * 1 bugfix:
