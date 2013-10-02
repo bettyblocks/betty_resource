@@ -1,5 +1,11 @@
 = BettyResource CHANGELOG
 
+=== 0.0.13 / 2013-10-02
+
+* 1 improvement:
+
+  * Memoizing belongs_to variables
+
 === 0.0.12 / 2013-10-01
 
 * 1 adjustment:
