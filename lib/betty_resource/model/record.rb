@@ -12,11 +12,8 @@ class DirtyHashy < HashWithIndifferentAccess
   end
 
   def set_typecasted(key, value)
-    if @model
-      @model.typecast(key, value)
-    else
-      value
-    end
+    value = @model.typecast(key, value) if @model
+    instance_variable_set("@typecasted_#{key}", value)
   end
 
 end

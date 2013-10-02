@@ -136,6 +136,7 @@ module Unit
           relations = BettyResource::Relation.all(:filters => [filter])
           assert_equal 1, relations.size
           assert_equal 1, relations[0].group.id
+          assert relations[0].group.object_id == relations[0].group.object_id
 
           assert_nil BettyResource::Relation.new.group
         end
