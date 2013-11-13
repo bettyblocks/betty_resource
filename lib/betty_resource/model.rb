@@ -1,13 +1,13 @@
+require 'betty_resource/model/record'
+require 'betty_resource/model/property'
+
 module BettyResource
   class Model
-    autoload :Record, 'betty_resource/model/record'
-    autoload :Property, 'betty_resource/model/property'
-
     attr_accessor :id, :name, :properties
 
     def self.parse(input)
-      input.reduce({}) do |hash, row|
-        hash.merge(row['name'] => Model.new(row['id'], row['name'], Property.parse(row['properties'])))
+      input.inject({}) do |hash, row|
+        hash.merge(row['name'] => Model.new(row['id'], row['name'], Property.parse(row['id'], row['properties'])))
       end
     end
 

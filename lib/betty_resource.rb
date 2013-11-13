@@ -1,8 +1,11 @@
 require 'active_support/core_ext/hash/indifferent_access' # See https://gist.github.com/1075643
+require 'active_support/inflector'
 
 require 'httparty'
 require 'crack/json'
 require 'dirty_hashy'
+
+require 'betty_resource/kind_extendable'
 
 module BettyResource
   autoload :Api, 'betty_resource/api'

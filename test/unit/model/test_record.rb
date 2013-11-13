@@ -140,6 +140,11 @@ module Unit
 
           assert_nil BettyResource::Relation.new.group
         end
+
+        it 'should be able to fetch a has-many value' do
+          group = BettyResource::Group.get(1)
+          assert_equal %w(Chris Daniel), group.relations.map(&:first_name)
+        end
       end
 
     end
