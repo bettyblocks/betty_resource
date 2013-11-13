@@ -1,13 +1,13 @@
 module BettyResource
   class Model
-    autoload :Record, "betty_resource/model/record"
-    autoload :Property, "betty_resource/model/property"
+    autoload :Record, 'betty_resource/model/record'
+    autoload :Property, 'betty_resource/model/property'
 
     attr_accessor :id, :name, :properties
 
     def self.parse(input)
-      input.inject({}) do |hash, row|
-        hash.merge(row["name"] => Model.new(row["id"], row["name"], Property.parse(row["properties"])))
+      input.reduce({}) do |hash, row|
+        hash.merge(row['name'] => Model.new(row['id'], row['name'], Property.parse(row['properties'])))
       end
     end
 
@@ -16,7 +16,7 @@ module BettyResource
     end
 
     def property(name)
-      properties.detect{|p|p.name == name.to_s}
+      properties.find { |p|p.name == name.to_s }
     end
 
     def typecast(key, value)
@@ -25,14 +25,14 @@ module BettyResource
     end
 
     def attributes
-      properties.collect(&:name)
+      properties.map(&:name)
     end
 
     # TODO: Refactor this method in order to handle formatted view JSON correctly
     def all(options = {})
       begin
-        response = Api.get("/models/#{id}/records", :body => options).parsed_response
-        ((view_id = options.delete(:view_id) || options.delete("view_id")).nil? ? response : response["records"]).collect do |data|
+        response = Api.get("/models/#{id}/records", body: options).parsed_response
+        ((view_id = options.delete(:view_id) || options.delete('view_id')).nil? ? response : response['records']).map do |data|
           load data
         end
       rescue MultiJson::DecodeError
@@ -47,7 +47,7 @@ module BettyResource
     end
 
     def first(options = {})
-      all(options.merge(:limit => 1)).first
+      all(options.merge(limit: 1)).first
     end
 
     def new(attributes = {})
@@ -68,7 +68,7 @@ module BettyResource
 
     def load(data, record = nil)
       if data
-        id = data.delete "id"
+        id = data.delete 'id'
         (record || BettyResource::Model::Record.new(self)).tap do |record|
           record.instance_variable_set :@id, id
           record.attributes = data

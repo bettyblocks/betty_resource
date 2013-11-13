@@ -4,8 +4,8 @@ module BettyResource
       attr_accessor :id, :name, :kind, :options
 
       def self.parse(input)
-        input.collect do |row|
-          Property.new(row["id"], row["name"], row["kind"], row["options"])
+        input.map do |row|
+          Property.new(row['id'], row['name'], row['kind'], row['options'])
         end
       end
 
@@ -14,7 +14,7 @@ module BettyResource
       end
 
       def typecast(value)
-        if kind == "belongs_to" && id = (value && value["id"])
+        if kind == 'belongs_to' && id = (value && value['id'])
           model.get(id)
         else
           value
@@ -22,7 +22,7 @@ module BettyResource
       end
 
       def model
-        BettyResource.meta_data.models.values.detect{|x| x.id == options["model"]} if kind == "belongs_to"
+        BettyResource.meta_data.models.values.find { |x| x.id == options['model'] } if kind == 'belongs_to'
       end
 
     end

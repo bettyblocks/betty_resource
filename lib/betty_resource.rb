@@ -1,14 +1,14 @@
-require "active_support/core_ext/hash/indifferent_access" # See https://gist.github.com/1075643
+require 'active_support/core_ext/hash/indifferent_access' # See https://gist.github.com/1075643
 
-require "httparty"
-require "crack/json"
-require "dirty_hashy"
+require 'httparty'
+require 'crack/json'
+require 'dirty_hashy'
 
 module BettyResource
-  autoload :Api, "betty_resource/api"
-  autoload :Configuration, "betty_resource/configuration"
-  autoload :MetaData, "betty_resource/meta_data"
-  autoload :Model, "betty_resource/model"
+  autoload :Api, 'betty_resource/api'
+  autoload :Configuration, 'betty_resource/configuration'
+  autoload :MetaData, 'betty_resource/meta_data'
+  autoload :Model, 'betty_resource/model'
 
   def self.const_missing(name)
     meta_data.model(name).tap do |model|

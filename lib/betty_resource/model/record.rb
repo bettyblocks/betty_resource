@@ -33,10 +33,10 @@ module BettyResource
 
       def initialize(model, attributes = {})
         @model = model
-        @id = attributes.delete(:id) || attributes.delete("id")
+        @id = attributes.delete(:id) || attributes.delete('id')
         @errors = {}
         super()
-        self.attributes = Hash[model.attributes.collect{|x| [x, nil]}].merge attributes
+        self.attributes = Hash[model.attributes.map { |x| [x, nil] }].merge attributes
         self.attributes.instance_variable_set(:@model, model)
       end
 
@@ -70,31 +70,31 @@ module BettyResource
           if success
             model.send :load, result.parsed_response, self
           else
-            @errors = result.parsed_response ? result.parsed_response["errors"] : {"" => ["Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak"]}
+            @errors = result.parsed_response ? result.parsed_response['errors'] : { '' => ['Er is iets mis gegaan met het verwerken van het formulier. Probeer u het later nog eens. Onze excuses voor het ongemak'] }
           end
         end
       end
 
       def inspect
-        inspection = "id: #{id.inspect}, #{attributes.collect{|key, value| "#{key}: #{value.inspect}"}.join(", ")}"
+        inspection = "id: #{id.inspect}, #{attributes.map { |key, value| "#{key}: #{value.inspect}"}.join(", ")}"
         "#<#{model.name} #{inspection}>"
       end
       alias :to_s :inspect
 
       # TODO: Test this update
       def as_json(options = {})
-        attributes_as_json(options).merge! "id" => id
+        attributes_as_json(options).merge! 'id' => id
       end
 
     private
 
       def to_params
-        {:body => {:record => attributes_as_json}, :headers => {"Content-Type" => "application/json"}}
+        { body: { record: attributes_as_json }, headers: { 'Content-Type' => 'application/json' } }
       end
 
       # TODO: Test this update
       def attributes_as_json(options = {})
-        attributes.inject({}) do |h, (k, v)|
+        attributes.reduce({}) do |h, (k, v)|
           h.merge! k => (v.respond_to?(:as_json) ? v.as_json(options) : v) if v
           h
         end
