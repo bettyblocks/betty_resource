@@ -143,7 +143,7 @@ module Unit
 
         it 'should be able to fetch a has-many value' do
           group = BettyResource::Group.get(1)
-          assert_equal %w(Chris Daniel), group.relations.map(&:first_name)
+          assert_equal %w(Chris Daniel), group.relations.map(&:first_name).sort
         end
       end
 
