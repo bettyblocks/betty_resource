@@ -26,7 +26,7 @@ module BettyResource
         false
       end
 
-      def typecast(value)
+      def typecast(record, value)
         value
       end
 

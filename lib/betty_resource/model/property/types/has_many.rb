@@ -9,13 +9,13 @@ module BettyResource
             true
           end
 
-          def typecast(value)
+          def typecast(record, value)
             filter = {
               'operator' => 'and',
               'conditions' => [
                 'path' => [inverse_property.id, model.property(:id).id],
                 'predicate' => 'eq',
-                'criteria' => 1
+                'criteria' => record.id
               ]
             }
 

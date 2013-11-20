@@ -5,7 +5,7 @@ module BettyResource
         module BelongsTo
           include Association
 
-          def typecast(value)
+          def typecast(record, value)
             if id = (value && value['id'])
               target_model.get(id)
             end

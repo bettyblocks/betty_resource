@@ -1,4 +1,22 @@
+module DirtyAttributes
+  module InstanceMethods
+    def initialize(record)
+      @attributes = DirtyHashy.new({}, true, self.class.attributes, record).tap do |hashy|
+        dirty_map! hashy
+        clean_up!
+      end
+    end
+  end
+end
+
 class DirtyHashy < HashWithIndifferentAccess
+
+  alias :org_initialize :initialize
+
+  def initialize(constructor = {}, map_methods = false, restricted_keys = nil, record)
+    @record = record
+    org_initialize(constructor = {}, map_methods = false, restricted_keys = nil)
+  end
 
   alias_method :regular_reader, :[]
   def [](key, mapped = false)
@@ -12,7 +30,7 @@ class DirtyHashy < HashWithIndifferentAccess
   end
 
   def set_typecasted(key, value)
-    value = @model.typecast(key, value) if @model
+    value = @record.typecast(key, value) if @record
     instance_variable_set("@typecasted_#{key}", value)
   end
 
@@ -31,11 +49,16 @@ module BettyResource
         model
       end
 
+      def typecast(key, value)
+        property = self.class.property(key)
+        property ? property.typecast(self, value) : value
+      end
+
       def initialize(model, attributes = {})
         @model = model
         @id = attributes.delete(:id) || attributes.delete('id')
         @errors = {}
-        super()
+        super(self)
         self.attributes = Hash[model.attributes.map { |x| [x, nil] }].merge attributes
         self.attributes.instance_variable_set(:@model, model)
       end

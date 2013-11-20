@@ -19,11 +19,6 @@ module BettyResource
       properties.find { |p|p.name == name.to_s }
     end
 
-    def typecast(key, value)
-      property = self.property(key)
-      property ? property.typecast(value) : value
-    end
-
     def attributes
       properties.map(&:name)
     end
