@@ -148,6 +148,14 @@ module Unit
           group = BettyResource::Group.get(3)
           assert_equal %w(), group.relations.map(&:first_name).sort
         end
+
+        it "should be able to fetch a has-and-belongs-to-many value" do
+          user = BettyResource::User.get(5)
+          assert_equal %w(admin), user.roles.map(&:name)
+
+          user = BettyResource::User.get(1)
+          assert_equal ['admin', 'blocks admin'], user.roles.map(&:name).sort
+        end
       end
 
     end

@@ -1,5 +1,6 @@
 require 'betty_resource/model/property/types/association'
 require 'betty_resource/model/property/types/belongs_to'
+require 'betty_resource/model/property/types/has_and_belongs_to_many'
 require 'betty_resource/model/property/types/has_many'
 
 module BettyResource
@@ -19,7 +20,7 @@ module BettyResource
 
       def initialize(id, model_id, name, kind, options)
         @id, @model_id, @name, @kind, @options = id, model_id, name, kind, options
-        extend_kind_methods if %(belongs_to has_many).include?(kind)
+        extend_kind_methods if %(belongs_to has_and_belongs_to_many has_many).include?(kind)
       end
 
       def collection?
