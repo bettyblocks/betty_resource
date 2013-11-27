@@ -83,7 +83,7 @@ module BettyResource
 
         result = begin
           if new_record?
-            Api.post("/models/#{model.id}/records/new", to_params)
+            Api.post("/models/#{model.id}/records/new", to_update_params)
           else
             Api.put("/models/#{model.id}/records/#{id}", to_params)
           end
@@ -114,6 +114,17 @@ module BettyResource
       def to_params
         { body: { record: attributes_as_json }, headers: { 'Content-Type' => 'application/json' } }
       end
+
+      def to_update_params
+        {body: {record: dirty_attributes_as_json}, headers: {'Content-Type' => 'application/json'}}
+      end
+
+      def dirty_attributes_as_json
+        changes.inject({}) do |hash, change|
+          hash[change.first] = change.last.last
+          hash
+        end
+       end
 
       # TODO: Test this update
       def attributes_as_json(options = {})
