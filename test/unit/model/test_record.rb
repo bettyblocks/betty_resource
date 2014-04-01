@@ -2,7 +2,7 @@ require_relative '../../test_helper'
 
 module Unit
   module Record
-    class TestRecord < MiniTest::Unit::TestCase
+    class TestRecord < MiniTest::Test
 
       describe BettyResource::Model::Record do
         it 'should return its model' do

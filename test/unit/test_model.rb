@@ -1,7 +1,7 @@
 require_relative '../test_helper'
 
 module Unit
-  class TestModel < MiniTest::Unit::TestCase
+  class TestModel < MiniTest::Test
 
     describe BettyResource::Model do
       it 'should know its properties' do
