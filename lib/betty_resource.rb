@@ -1,4 +1,5 @@
 require 'active_support/core_ext/hash/indifferent_access' # See https://gist.github.com/1075643
+require 'active_support/core_ext/object/to_query'
 require 'active_support/inflector'
 
 require 'httparty'
