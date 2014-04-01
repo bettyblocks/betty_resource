@@ -26,7 +26,7 @@ module BettyResource
     # TODO: Refactor this method in order to handle formatted view JSON correctly
     def all(options = {})
       begin
-        response = Api.get("/models/#{id}/records", query: options.to_query).parsed_response
+        response = Api.get("/models/#{id}/records", body: options).parsed_response
         ((view_id = options.delete(:view_id) || options.delete('view_id')).nil? ? response : response['records']).map do |data|
           load data
         end
