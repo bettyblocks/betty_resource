@@ -112,7 +112,14 @@ module BettyResource
     private
 
       def to_params
-        { body: { record: attributes_as_json }, headers: { 'Content-Type' => 'application/json' } }
+        { body: { record: dirty_attributes_as_json }, headers: { 'Content-Type' => 'application/json' } }
+      end
+
+      def dirty_attributes_as_json(options = {})
+        changes.reduce({}) do |hash, (property_name, (was, new_value))|
+          hash.merge!({property_name => (new_value.respond_to?(:as_json) ? new_value.as_json(options) : new_value)})
+          hash
+        end
       end
 
       # TODO: Test this update
