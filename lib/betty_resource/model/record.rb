@@ -112,7 +112,7 @@ module BettyResource
     private
 
       def to_params
-        { body: { record: attributes_as_json }, headers: { 'Content-Type' => 'application/json' } }
+        { body: { record: attributes_as_json } }
       end
 
       # TODO: Test this update
